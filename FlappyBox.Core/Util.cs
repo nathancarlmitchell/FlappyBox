@@ -10,9 +10,9 @@ namespace FlappyBox
 {
     public static class Util
     {
+        
         private static string gameDataLocation = "GameData.json";
         private static string skinDataLocation = "SkinData.json";
-        private static readonly string androidContext = "/data/data/FlappyBox.Android/files/";
         private static readonly string defaultGameData = @"{""HighScore"":0,""Coins"":0}";
         private static readonly string defaultSkinData =
             @"[{""Name"":""anim_idle_default"",""Selected"":true,""Locked"":false,""Cost"":0,""Frames"":2,""FPS"":2},
@@ -29,8 +29,9 @@ namespace FlappyBox
             if (OperatingSystem.IsAndroid())
             {
                 Console.WriteLine("Device running Android.");
-                gameDataLocation = androidContext + gameDataLocation;
-                skinDataLocation = androidContext + skinDataLocation;
+                // AppContext.BaseDirectory = "/data/user/0/FlappyBox.Android/files".
+                gameDataLocation = AppContext.BaseDirectory + "/" + gameDataLocation;
+                skinDataLocation = AppContext.BaseDirectory + "/" + skinDataLocation;
             }
         }
 
