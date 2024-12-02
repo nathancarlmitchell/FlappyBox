@@ -32,7 +32,6 @@ namespace FlappyBox.States
 
             var newGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(CenterWidth, 200),
                 Text = "New Game",
             };
 
@@ -40,21 +39,26 @@ namespace FlappyBox.States
 
             var loadSkinsButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(CenterWidth, 250),
                 Text = "Skins",
             };
 
-            loadSkinsButton.Click += loadSkinsButton_Click;
+            loadSkinsButton.Click += LoadSkinsButton_Click;
+
+            var trophyButton = new Button(buttonTexture, buttonFont)
+            {
+                Text = "Achievments",
+            };
+
+            trophyButton.Click += TrophyButton_Click;
 
             var quitGameButton = new Button(buttonTexture, buttonFont)
             {
-                Position = new Vector2(CenterWidth, 300),
                 Text = "Quit",
             };
 
             quitGameButton.Click += QuitGameButton_Click;
 
-            _components = new List<Button>() { newGameButton, loadSkinsButton, quitGameButton };
+            _components = new List<Button>() { newGameButton, loadSkinsButton, trophyButton, quitGameButton };
 
             _mainMenu = new Menu(_components);
         }
@@ -85,7 +89,12 @@ namespace FlappyBox.States
             _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
         }
 
-        private void loadSkinsButton_Click(object sender, EventArgs e)
+        private void TrophyButton_Click(object sender, EventArgs e)
+        {
+            _game.ChangeState(new TrophyState(_game, _graphicsDevice, _content));
+        }
+
+        private void LoadSkinsButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(new SkinsState(_game, _graphicsDevice, _content));
         }

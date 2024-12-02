@@ -93,6 +93,20 @@ namespace FlappyBox.Controls
             }
 
             // Check touch input.
+            if (touchCollection.Moved())
+            {
+                foreach (TouchLocation tl in touchCollection)
+                {
+                    int x = (int)tl.Position.X;
+                    int y = (int)tl.Position.Y;
+                    var touchRectangle = new Rectangle(x, y, 1, 1);
+                    if (touchRectangle.Intersects(Rectangle))
+                    {
+                        _isHovering = true;
+                    }
+                }
+            }
+
             if (touchCollection.Pressed())
             {
                 foreach (TouchLocation tl in touchCollection)

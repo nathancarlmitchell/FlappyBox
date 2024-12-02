@@ -17,7 +17,7 @@ namespace FlappyBox.Controls
         public Menu(List<Button> components)
         {
             _components = components;
-            _centerHeight = MenuState.CenterHeight;
+            _centerHeight = MenuState.CenterHeight + (components.Count * 20);
             _centerWidth = MenuState.ControlWidthCenter;
             _scale = Game1.Scale;
 
