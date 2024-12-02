@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35514.174 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlappyBox.Android", "FlappyBox.Android\FlappyBox.Android.csproj", "{9706D542-2E04-432F-B3BD-8B629E6B41A8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{160881CF-2BDD-4F5A-A685-411F83544FFF} = {160881CF-2BDD-4F5A-A685-411F83544FFF}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlappyBox.Core", "FlappyBox.Core\FlappyBox.Core.csproj", "{160881CF-2BDD-4F5A-A685-411F83544FFF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9706D542-2E04-432F-B3BD-8B629E6B41A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9706D542-2E04-432F-B3BD-8B629E6B41A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9706D542-2E04-432F-B3BD-8B629E6B41A8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9706D542-2E04-432F-B3BD-8B629E6B41A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9706D542-2E04-432F-B3BD-8B629E6B41A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9706D542-2E04-432F-B3BD-8B629E6B41A8}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{160881CF-2BDD-4F5A-A685-411F83544FFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{160881CF-2BDD-4F5A-A685-411F83544FFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{160881CF-2BDD-4F5A-A685-411F83544FFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{160881CF-2BDD-4F5A-A685-411F83544FFF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

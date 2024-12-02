@@ -1,0 +1,306 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <SupportedOSPlatformVersion>23</SupportedOSPlatformVersion>
+    <OutputType>Exe</OutputType>
+    <ApplicationId>com.companyname.monogame</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Content\AnimatedCharacter.png" />
+    <AndroidAsset Remove="Content\anim_idle.png" />
+    <AndroidAsset Remove="Content\anim_idle_clear.png" />
+    <AndroidAsset Remove="Content\anim_idle_companion.png" />
+    <AndroidAsset Remove="Content\anim_idle_default.png" />
+    <AndroidAsset Remove="Content\anim_idle_dice.png" />
+    <AndroidAsset Remove="Content\anim_idle_locked.png" />
+    <AndroidAsset Remove="Content\anim_idle_pink.png" />
+    <AndroidAsset Remove="Content\anim_idle_red.png" />
+    <AndroidAsset Remove="Content\anim_idle_rubiks.png" />
+    <AndroidAsset Remove="Content\anim_idle_tv.png" />
+    <AndroidAsset Remove="Content\anim_jump.png" />
+    <AndroidAsset Remove="Content\anim_jump_clear.png" />
+    <AndroidAsset Remove="Content\anim_jump_companion.png" />
+    <AndroidAsset Remove="Content\anim_jump_default.png" />
+    <AndroidAsset Remove="Content\anim_jump_dice.png" />
+    <AndroidAsset Remove="Content\anim_jump_locked.png" />
+    <AndroidAsset Remove="Content\anim_jump_pink.png" />
+    <AndroidAsset Remove="Content\anim_jump_red.png" />
+    <AndroidAsset Remove="Content\anim_jump_rubiks.png" />
+    <AndroidAsset Remove="Content\anim_jump_tv.png" />
+    <AndroidAsset Remove="Content\arrow.png" />
+    <AndroidAsset Remove="Content\ball.png" />
+    <AndroidAsset Remove="Content\ball_jump.png" />
+    <AndroidAsset Remove="Content\ball_mad.png" />
+    <AndroidAsset Remove="Content\bg.jpg" />
+    <AndroidAsset Remove="Content\bird.png" />
+    <AndroidAsset Remove="Content\boost.png" />
+    <AndroidAsset Remove="Content\border.png" />
+    <AndroidAsset Remove="Content\cloud.png" />
+    <AndroidAsset Remove="Content\coin.png" />
+    <AndroidAsset Remove="Content\Content.mgcb" />
+    <AndroidAsset Remove="Content\Controls\Button.png" />
+    <AndroidAsset Remove="Content\DebugFont.spritefont" />
+    <AndroidAsset Remove="Content\HudFont.spritefont" />
+    <AndroidAsset Remove="Content\HudMobileFont.spritefont" />
+    <AndroidAsset Remove="Content\locked.png" />
+    <AndroidAsset Remove="Content\TitleFont.spritefont" />
+    <AndroidAsset Remove="Content\wall.png" />
+    <AndroidAsset Remove="Content\wing_left.png" />
+    <AndroidAsset Remove="Content\wing_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Content\AnimatedCharacter.png" />
+    <None Remove="Content\anim_idle.png" />
+    <None Remove="Content\anim_idle_clear.png" />
+    <None Remove="Content\anim_idle_companion.png" />
+    <None Remove="Content\anim_idle_default.png" />
+    <None Remove="Content\anim_idle_dice.png" />
+    <None Remove="Content\anim_idle_locked.png" />
+    <None Remove="Content\anim_idle_pink.png" />
+    <None Remove="Content\anim_idle_red.png" />
+    <None Remove="Content\anim_idle_rubiks.png" />
+    <None Remove="Content\anim_idle_tv.png" />
+    <None Remove="Content\anim_jump.png" />
+    <None Remove="Content\anim_jump_clear.png" />
+    <None Remove="Content\anim_jump_companion.png" />
+    <None Remove="Content\anim_jump_default.png" />
+    <None Remove="Content\anim_jump_dice.png" />
+    <None Remove="Content\anim_jump_locked.png" />
+    <None Remove="Content\anim_jump_pink.png" />
+    <None Remove="Content\anim_jump_red.png" />
+    <None Remove="Content\anim_jump_rubiks.png" />
+    <None Remove="Content\anim_jump_tv.png" />
+    <None Remove="Content\arrow.png" />
+    <None Remove="Content\ball.png" />
+    <None Remove="Content\ball_jump.png" />
+    <None Remove="Content\ball_mad.png" />
+    <None Remove="Content\bg.jpg" />
+    <None Remove="Content\bird.png" />
+    <None Remove="Content\boost.png" />
+    <None Remove="Content\border.png" />
+    <None Remove="Content\cloud.png" />
+    <None Remove="Content\coin.png" />
+    <None Remove="Content\Content.mgcb" />
+    <None Remove="Content\Controls\Button.png" />
+    <None Remove="Content\DebugFont.spritefont" />
+    <None Remove="Content\HudFont.spritefont" />
+    <None Remove="Content\HudMobileFont.spritefont" />
+    <None Remove="Content\locked.png" />
+    <None Remove="Content\TitleFont.spritefont" />
+    <None Remove="Content\wall.png" />
+    <None Remove="Content\wing_left.png" />
+    <None Remove="Content\wing_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Content\bin\Android\Content\anim_idle_clear.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\anim_idle_companion.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\anim_idle_default.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\anim_idle_dice.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\anim_idle_locked.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\anim_idle_pink.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\anim_idle_rubiks.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\anim_idle_tv.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\anim_jump_clear.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\anim_jump_companion.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\anim_jump_default.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\anim_jump_dice.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\anim_jump_locked.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\anim_jump_pink.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\anim_jump_rubiks.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\anim_jump_tv.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\arrow.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\ball.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\ball_jump.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\ball_mad.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\bg.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\bird.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\boost.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\border.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\cloud.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\coin.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\Controls\Button.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\DebugFont.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\HudFont.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\HudMobileFont.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\locked.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\TitleFont.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\wall.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\wing_left.xnb" />
+    <AndroidAsset Include="Content\bin\Android\Content\wing_right.xnb" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\.mgstats" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_idle_clear.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_idle_companion.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_idle_default.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_idle_dice.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_idle_locked.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_idle_pink.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_idle_rubiks.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_idle_tv.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_jump_clear.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_jump_companion.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_jump_default.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_jump_dice.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_jump_locked.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_jump_pink.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_jump_rubiks.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\anim_jump_tv.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\arrow.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\ball.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\ball_jump.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\ball_mad.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\bg.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\bird.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\boost.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\border.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\cloud.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\coin.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\Controls\Button.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\DebugFont.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\HudFont.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\HudMobileFont.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\locked.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\TitleFont.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\wall.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\wing_left.mgcontent" />
+    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\wing_right.mgcontent" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\AnimatedCharacter.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_idle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_idle_clear.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_idle_companion.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_idle_default.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_idle_dice.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_idle_locked.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_idle_pink.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_idle_red.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_idle_rubiks.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_idle_tv.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_jump.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_jump_clear.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_jump_companion.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_jump_default.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_jump_dice.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_jump_locked.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_jump_pink.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_jump_red.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_jump_rubiks.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\anim_jump_tv.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\arrow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ball.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ball_jump.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ball_mad.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\bg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\bird.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\boost.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\border.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\cloud.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\coin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Content.mgcb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Controls\Button.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\DebugFont.spritefont">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\HudFont.spritefont">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\HudMobileFont.spritefont">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\locked.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\TitleFont.spritefont">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\wall.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\wing_left.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\wing_right.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.2.1105" />
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.2.1105" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FlappyBox.Core\FlappyBox.Core.csproj" />
+  </ItemGroup>
+  <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
+    <Message Text="Restoring dotnet tools" Importance="High" />
+    <Exec Command="dotnet tool restore" />
+  </Target>
+</Project>
