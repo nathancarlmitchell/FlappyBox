@@ -107,7 +107,7 @@ namespace FlappyBox.Controls
                 }
             }
 
-            if (touchCollection.Pressed())
+            if (touchCollection.Released())
             {
                 foreach (TouchLocation tl in touchCollection)
                 {

@@ -67,7 +67,7 @@ namespace FlappyBox
         {
             foreach (TouchLocation location in touchState)
             {
-                if (location.State == TouchLocationState.Released)
+                if (location.State == TouchLocationState.Moved)
                 {
                     if (_debug)
                     {
