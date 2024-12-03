@@ -12,46 +12,44 @@ namespace FlappyBox.States
     public class MenuState : State
     {
         private List<Button> _components;
-        public static SpriteFont titleFont;
         private Menu _mainMenu;
+        private SpriteFont titleFont;
 
         public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-            : base(game, graphicsDevice, content)
+            : base()
         {
             new GameState(_game, _graphicsDevice, _content);
 
             _game.IsMouseVisible = true;
 
-            titleFont = _content.Load<SpriteFont>("TitleFont");
+            titleFont = Art.TitleFont;
 
-            var buttonTexture = _content.Load<Texture2D>("Controls/Button");
-            var buttonFont = _content.Load<SpriteFont>("HudFont");
-
+            // ????????????????????? //
             MenuState.ControlWidthCenter =
-                (_graphicsDevice.Viewport.Width / 2) - (buttonTexture.Width / 2);
+                (_graphicsDevice.Viewport.Width / 2) - (Art.ButtonTexture.Width / 2);
 
-            var newGameButton = new Button(buttonTexture, buttonFont)
+            var newGameButton = new Button()
             {
                 Text = "New Game",
             };
 
             newGameButton.Click += NewGameButton_Click;
 
-            var loadSkinsButton = new Button(buttonTexture, buttonFont)
+            var loadSkinsButton = new Button()
             {
                 Text = "Skins",
             };
 
             loadSkinsButton.Click += LoadSkinsButton_Click;
 
-            var trophyButton = new Button(buttonTexture, buttonFont)
+            var trophyButton = new Button()
             {
                 Text = "Achievments",
             };
 
             trophyButton.Click += TrophyButton_Click;
 
-            var quitGameButton = new Button(buttonTexture, buttonFont)
+            var quitGameButton = new Button()
             {
                 Text = "Quit",
             };
@@ -84,11 +82,6 @@ namespace FlappyBox.States
             spriteBatch.End();
         }
 
-        public void onClick()
-        {
-            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
-        }
-
         private void TrophyButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(new TrophyState(_game, _graphicsDevice, _content));
@@ -102,6 +95,10 @@ namespace FlappyBox.States
         private void NewGameButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+        }
+        private void QuitGameButton_Click(object sender, EventArgs e)
+        {
+            _game.Exit();
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -127,11 +124,6 @@ namespace FlappyBox.States
             {
                 _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
             }
-        }
-
-        private void QuitGameButton_Click(object sender, EventArgs e)
-        {
-            _game.Exit();
         }
     }
 }

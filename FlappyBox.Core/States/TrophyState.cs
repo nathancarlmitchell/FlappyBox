@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,25 +16,24 @@ namespace FlappyBox.States
         private List<Button> _components;
         private Menu _menu;
         private AnimatedTexture _trophySprite;
+        private SpriteFont hudFont;
 
-        public static List<Skin> Skins { get; set; }
+        public static List<Trophy> Trophys { get; set; }
 
         public TrophyState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-            : base(game, graphicsDevice, content)
+            : base()
         {
             _game.IsMouseVisible = true;
 
             Background.SetAlpha(0.5f);
 
+            hudFont = Art.HudFont;
+
             _trophySprite = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
             _trophySprite.Load(_content, "trophy", 1, 1);
 
-            var buttonTexture = _content.Load<Texture2D>("Controls/Button");
-            var buttonFont = _content.Load<SpriteFont>("HudFont");
-
-            var backButton = new Button(buttonTexture, buttonFont)
+            var backButton = new Button()
             {
-                Position = new Vector2(CenterWidth, 250),
                 Text = "Back",
             };
 
@@ -46,29 +43,48 @@ namespace FlappyBox.States
 
             _menu = new Menu(_components);
 
-            //Util.LoadSkinData(content);
+            Util.LoadTrophyData(content);
 
-            //for (int i = 0; i < Skins.Count; i++)
-            //{
+            UnlockTrophys();
+            // Util.SaveTrophyData();
+
+            for (int i = 0; i < Trophys.Count; i++)
+            {
             //    Skins[i].Click += Skin_Click;
 
             //    if (Skins[i].Selected)
             //    {
             //        Skins[i].Activate();
             //    }
-            //}
+            }
 
             //Skins = Skins.OrderBy(o => o.Cost).ToList();
+        }
+
+        public static void UnlockTrophys()
+        {
+            for (int i = 0; i < Trophys.Count; i++)
+            {
+                switch (Trophys[i].Name)
+                {
+                    case "Trophy":
+                        Trophys[i].Locked = false; break;
+                    case "Secret":
+                        Trophys[i].Locked = true; break;
+                }
+            }
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
 
+            // Draw the background.
             Background.Draw(gameTime, spriteBatch);
 
+            // Draw coins on HUD.
             spriteBatch.DrawString(
-                GameState.hudFont,
+                hudFont,
                 " x " + GameState.Coins,
                 new Vector2(GameState.coinHUD.X + 16, GameState.coinHUD.Y - 8),
                 Color.Black
@@ -78,39 +94,51 @@ namespace FlappyBox.States
                 new Vector2(GameState.coinHUD.X, GameState.coinHUD.Y)
             );
 
-
-            int test_number = 10;
-            for (int i = 0; i < test_number; i++)
+            // Draw trophys.
+            for (int i = 0; i < Trophys.Count; i++)
             {
-                int _centerComponent = test_number / 2;
+                int _centerComponent = Trophys.Count / 2;
                 int _difference = i - _centerComponent;
-                int _x = MenuState.CenterWidth + _difference * 100 - (64 / test_number);
+                int _x = MenuState.CenterWidth + _difference * 150 - (64 / Trophys.Count);
                 int _y = MenuState.CenterHeight - 128 - 16;
 
-                //if (Skins[i].Locked)
-                //{
-                //    Skins[i].LoadTexture(_content, "locked", 1, 1);
-                //    spriteBatch.DrawString(
-                //        GameState.hudFont,
-                //        " x " + Skins[i].Cost,
-                //        new Vector2(_x, _y + 72),
-                //        Color.Black
-                //    );
-                //}
+                string name = "???";
+                string description = "???";
 
-                //if (Skins[i].Selected)
-                //{
-                //_trophySprite.DrawFrame(spriteBatch, new Vector2(_x, _y - 16 - 64));
-                //    Skins[i].Position = new Vector2(_x, _y - 16);
-                //}
-                //else
-                //{
-                //    Skins[i].Position = new Vector2(_x, _y);
-                //}
-                _trophySprite.DrawFrame(spriteBatch, new Vector2(_x, _y));
-                //Skins[i].Draw(spriteBatch);
+                if (!Trophys[i].Locked)
+                {
+                    name = Trophys[i].Name;
+                    description = Trophys[i].Description;
+                }
+
+                spriteBatch.DrawString(
+                    hudFont,
+                    name,
+                    new Vector2(_x, _y + 72),
+                    Color.Black
+                );
+
+                spriteBatch.DrawString(
+                    hudFont,
+                    description,
+                    new Vector2(_x, _y - 72),
+                    Color.Black
+                );
+
+                if (Trophys[i].Selected)
+                {
+                    _trophySprite.DrawFrame(spriteBatch, new Vector2(_x, _y - 16 - 64));
+                    Trophys[i].Position = new Vector2(_x, _y - 16);
+                }
+                else
+                {
+                    Trophys[i].Position = new Vector2(_x, _y);
+                }
+
+                Trophys[i].Draw(spriteBatch);
             }
 
+            // Draw the button menu.
             _menu.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
@@ -255,10 +283,10 @@ namespace FlappyBox.States
             }
 
             TouchCollection touchState = TouchPanel.GetState();
-            //foreach (var skin in Skins)
-            //{
-            //    skin.Update(gameTime, touchState);
-            //}
+            foreach (var trophy in Trophys)
+            {
+                trophy.Update(gameTime, touchState);
+            }
 
             //_arrowSprite.UpdateFrame(elapsed);
 

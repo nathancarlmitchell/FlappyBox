@@ -42,10 +42,25 @@ namespace FlappyBox.Controls
 
         #region Methods
 
+        public Button()
+        {
+            _texture = Art.ButtonTexture;
+            _font = Art.HudFont;
+            _scale = Game1.Scale;
+            PenColor = Color.Black;
+        }
+
+        public Button(Texture2D texture)
+        {
+            _texture = texture;
+            _font = Art.HudFont;
+            _scale = Game1.Scale;
+            PenColor = Color.Black;
+        }
         public Button(Texture2D texture, SpriteFont font)
         {
             _texture = texture;
-            _font = Game1.HudFont;
+            _font = font;
             _scale = Game1.Scale;
             PenColor = Color.Black;
         }

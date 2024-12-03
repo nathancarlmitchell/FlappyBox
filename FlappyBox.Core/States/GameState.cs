@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,7 +10,7 @@ namespace FlappyBox.States
 {
     public class GameState : State
     {
-        public static SpriteFont hudFont,
+        private static SpriteFont hudFont,
             debugFont;
         private Texture2D wallTexture,
             boostTexture;
@@ -30,7 +28,7 @@ namespace FlappyBox.States
         public static int Coins { get; set; }
 
         public GameState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-            : base(game, graphicsDevice, content)
+            : base()
         {
             _game.IsMouseVisible = false;
 
@@ -38,8 +36,8 @@ namespace FlappyBox.States
 
             Background.SetAlpha(1.0);
 
-            hudFont = Game1.HudFont;
-            debugFont = _content.Load<SpriteFont>("DebugFont");
+            hudFont = Art.HudFont;
+            debugFont = Art.DebugFont;
 
             wallTexture = new Texture2D(_graphicsDevice, 1, 1);
             wallTexture.SetData(new[] { Color.White });

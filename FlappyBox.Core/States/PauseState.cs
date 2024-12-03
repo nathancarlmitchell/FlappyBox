@@ -14,32 +14,26 @@ namespace FlappyBox.States
         private List<Button> _components;
         private Menu _menu;
         public PauseState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-        : base(game, graphicsDevice, content)
+        : base()
         {
             _game.IsMouseVisible = true;
 
-            var buttonTexture = _content.Load<Texture2D>("Controls/Button");
-            var buttonFont = _content.Load<SpriteFont>("HudFont");
-
-            var continueGameButton = new Button(buttonTexture, buttonFont)
+            var continueGameButton = new Button()
             {
-                Position = new Vector2(CenterWidth, 250),
                 Text = "Continue",
             };
 
             continueGameButton.Click += ContinueGameButton_Click;
 
-            var mainMenuButton = new Button(buttonTexture, buttonFont)
+            var mainMenuButton = new Button()
             {
-                Position = new Vector2(CenterWidth, 250),
                 Text = "Main Menu",
             };
 
             mainMenuButton.Click += MainMenuButton_Click;
 
-            var quitGameButton = new Button(buttonTexture, buttonFont)
+            var quitGameButton = new Button()
             {
-                Position = new Vector2(CenterWidth, 300),
                 Text = "Quit",
             };
 
@@ -59,7 +53,7 @@ namespace FlappyBox.States
         {
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(GameState.hudFont, "Paused: " + GameState.Score, new Vector2(ControlWidthCenter, CenterHeight/2),
+            spriteBatch.DrawString(Art.HudFont, "Paused: " + GameState.Score, new Vector2(ControlWidthCenter, CenterHeight/2),
                 Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
 
             _menu.Draw(gameTime, spriteBatch);
@@ -67,15 +61,20 @@ namespace FlappyBox.States
             spriteBatch.End();
         }
 
+        private void ContinueGame()
+        {
+            _game.ChangeState(Game1.GameState);
+        }
+
         private void ContinueGameButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+            ContinueGame();
         }
 
         private void MainMenuButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
-            Game1._gameState = null;
+            Game1.GameState = null;
         }
 
         private void QuitGameButton_Click(object sender, EventArgs e)
@@ -101,7 +100,7 @@ namespace FlappyBox.States
             // Check player input.
             if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
-                _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+                ContinueGame();
             }
         }
     }
