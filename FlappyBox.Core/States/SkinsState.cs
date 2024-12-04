@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -17,26 +16,23 @@ namespace FlappyBox.States
             _previousKeyboard;
         private List<Button> _components;
         private Menu _menu;
-        private AnimatedTexture _arrowSprite;
+        private AnimatedTexture arrowSprite;
+        private SpriteFont hudFont;
 
         public static List<Skin> Skins { get; set; }
 
         public SkinsState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-            : base(game, graphicsDevice, content)
+            : base()
         {
             _game.IsMouseVisible = true;
 
             Background.SetAlpha(0.5f);
 
-            _arrowSprite = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
-            _arrowSprite.Load(_content, "arrow", 4, 4);
+            arrowSprite = Art.ArrowSprite;
+            hudFont = Art.HudFont;
 
-            var buttonTexture = _content.Load<Texture2D>("Controls/Button");
-            var buttonFont = _content.Load<SpriteFont>("HudFont");
-
-            var backButton = new Button(buttonTexture, buttonFont)
+            var backButton = new Button()
             {
-                Position = new Vector2(CenterWidth, 250),
                 Text = "Back",
             };
 
@@ -68,14 +64,14 @@ namespace FlappyBox.States
             Background.Draw(gameTime, spriteBatch);
 
             spriteBatch.DrawString(
-                GameState.hudFont,
+                hudFont,
                 " x " + GameState.Coins,
-                new Vector2(GameState.coinHUD.X + 16, GameState.coinHUD.Y - 8),
+                new Vector2(GameState.CoinHUD.X + 16, GameState.CoinHUD.Y - 8),
                 Color.Black
             );
-            GameState.coinHUD.coinTexture.DrawFrame(
+            GameState.CoinHUD.coinTexture.DrawFrame(
                 spriteBatch,
-                new Vector2(GameState.coinHUD.X, GameState.coinHUD.Y)
+                new Vector2(GameState.CoinHUD.X, GameState.CoinHUD.Y)
             );
 
             for (int i = 0; i < Skins.Count; i++)
@@ -89,7 +85,7 @@ namespace FlappyBox.States
                 {
                     Skins[i].LoadTexture(_content, "locked", 1, 1);
                     spriteBatch.DrawString(
-                        GameState.hudFont,
+                        hudFont,
                         " x " + Skins[i].Cost,
                         new Vector2(_x, _y + 72),
                         Color.Black
@@ -98,7 +94,7 @@ namespace FlappyBox.States
 
                 if (Skins[i].Selected)
                 {
-                    _arrowSprite.DrawFrame(spriteBatch, new Vector2(_x, _y - 16 - 64));
+                    arrowSprite.DrawFrame(spriteBatch, new Vector2(_x, _y - 16 - 64));
                     Skins[i].Position = new Vector2(_x, _y - 16);
                 }
                 else
@@ -143,7 +139,7 @@ namespace FlappyBox.States
                 Console.WriteLine("Skin Locked.");
             }
 
-            Util.SaveGameData(GameState.Score, GameState.Coins);
+            Util.SaveGameData();
             Util.SaveSkinData();
         }
 
@@ -242,7 +238,7 @@ namespace FlappyBox.States
 
             Background.Update(gameTime);
 
-            GameState.coinHUD.coinTexture.UpdateFrame(elapsed);
+            GameState.CoinHUD.coinTexture.UpdateFrame(elapsed);
 
             // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();
@@ -258,7 +254,7 @@ namespace FlappyBox.States
                 skin.Update(gameTime, touchState);
             }
 
-            _arrowSprite.UpdateFrame(elapsed);
+            arrowSprite.UpdateFrame(elapsed);
 
             // Check player input.
             _previousKeyboard = _currentKeyboard;
@@ -267,14 +263,12 @@ namespace FlappyBox.States
             if (_currentKeyboard.IsKeyDown(Keys.Left) && !_previousKeyboard.IsKeyDown(Keys.Left))
             {
                 this.LeftArrowKey(-1);
-                Util.SaveGameData(GameState.Score, GameState.Coins);
                 Util.SaveSkinData();
             }
             // Right.
             if (_currentKeyboard.IsKeyDown(Keys.Right) && !_previousKeyboard.IsKeyDown(Keys.Right))
             {
                 this.RightArrowKey();
-                Util.SaveGameData(GameState.Score, GameState.Coins);
                 Util.SaveSkinData();
             }
             // Enter.

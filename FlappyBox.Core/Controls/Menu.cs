@@ -3,30 +3,32 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using FlappyBox.States;
+using System.Diagnostics;
 
 namespace FlappyBox.Controls
 {
     public class Menu
     {
-        private List<Button> _components;
+        private List<Button> _buttons;
         private int _difference;
         private int _centerHeight;
         private int _centerWidth;
         private int _scale;
+        private int x;
 
         public Menu(List<Button> components)
         {
-            _components = components;
-            _centerHeight = MenuState.CenterHeight + (components.Count * 20);
-            _centerWidth = MenuState.ControlWidthCenter;
+            _buttons = components;
+            _centerHeight = ((int)Game1.ScreenSize.Y / 2) + (components.Count * 20);
+            _centerWidth = (Game1.MobileWidth / 2) - ((Art.ButtonTexture.Width * Game1.Scale) / 2);
             _scale = Game1.Scale;
 
-            for (int i = 0; i < _components.Count; i++)
+            for (int i = 0; i < _buttons.Count; i++)
             {
-                int totalComponents = _components.Count;
+                int totalComponents = _buttons.Count;
                 int centerComponent = totalComponents / 2;
                 _difference = i - centerComponent;
-                _components[i].Position = new Vector2(
+                _buttons[i].Position = new Vector2(
                     _centerWidth,
                     _centerHeight + _difference * 50 * _scale
                 );
@@ -35,9 +37,9 @@ namespace FlappyBox.Controls
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < _components.Count; i++)
+            for (int i = 0; i < _buttons.Count; i++)
             {
-                _components[i].Draw(gameTime, spriteBatch);
+                _buttons[i].Draw(gameTime, spriteBatch);
             }
         }
     }

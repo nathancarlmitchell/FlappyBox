@@ -79,7 +79,8 @@ namespace FlappyBox
                     var touchRectangle = new Rectangle(x, y, 1, 1);
                     if (touchRectangle.Intersects(Rectangle))
                     {
-                        Click?.Invoke(this, new EventArgs());
+                        //Click?.Invoke(this, new EventArgs());
+                        IsHovering = true;
                     }
                 }
             }

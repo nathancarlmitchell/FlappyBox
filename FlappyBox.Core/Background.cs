@@ -1,9 +1,9 @@
 using System;
+using FlappyBox.States;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace FlappyBox.States
+namespace FlappyBox
 {
     public static class Background
     {
@@ -13,16 +13,29 @@ namespace FlappyBox.States
         private static Object cloud;
         private static double alpha,
             targetAlpha;
-        private static Random rand = new Random();
+        private static readonly Random rand = new();
 
         static Background()
         {
             alpha = 0.0;
+
+            backgroundTexture = Art.BackgroundTexture;
+            cloudTexture = Art.CloudTexture;
+
+            cloud = new Object { X = 250, Y = 200 };
+
+            bird = new Bird();
+            Reset(bird);
         }
 
-        public static void SetAlpha(double _targetAlpha)
+        public static void SetAlpha(double _alpha)
         {
-            targetAlpha = _targetAlpha;
+            targetAlpha = _alpha;
+        }
+
+        public static void Alpha(double _alpha)
+        {
+            alpha = _alpha;
         }
 
         public static void UpdateAlpha()
@@ -43,17 +56,6 @@ namespace FlappyBox.States
                     alpha = 0;
                 }
             }
-        }
-
-        public static void LoadContent(ContentManager content)
-        {
-            backgroundTexture = content.Load<Texture2D>("bg");
-            cloudTexture = content.Load<Texture2D>("cloud");
-
-            cloud = new Object { X = 250, Y = 200 };
-
-            bird = new Bird(content);
-            Reset(bird);
         }
 
         public static void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -90,9 +92,9 @@ namespace FlappyBox.States
                 cloudCooldown = 0;
                 cloud.X -= 1;
             }
-            if (cloud.X < 0)
+            if (cloud.X < 0 - cloudTexture.Width)
             {
-                Reset(cloud);
+                cloud.X = GameState.ScreenWidth + cloudTexture.Width;
             }
 
             // Update bird animation.
@@ -107,11 +109,11 @@ namespace FlappyBox.States
         public static void Reset(Object obj)
         {
             int minHeight = 128;
-            int maxHeight = GameState.ScreenHeight - 128;
+            int maxHeight = Game1.ScreenHeight - 128;
             int height = (int)
                 Math.Floor(rand.NextDouble() * (maxHeight - minHeight + 1) + minHeight);
 
-            obj.X = GameState.ScreenWidth + 128;
+            obj.X = Game1.ScreenWidth + 128;
             obj.Y = height;
         }
     }

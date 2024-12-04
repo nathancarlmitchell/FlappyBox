@@ -13,39 +13,40 @@ namespace FlappyBox.States
     {
         private List<Button> _components;
         private Menu _menu;
+        private SpriteFont titleFont,
+            hudFont;
 
         public GameOverState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-            : base(game, graphicsDevice, content)
+            : base()
         {
             _game.IsMouseVisible = true;
 
-            Util.SaveGameData(GameState.Score, GameState.Coins);
+            GameState.GamesPlayed++;
+
+            Util.SaveGameData();
             Util.SaveSkinData();
 
             Background.SetAlpha(0.33f);
 
-            var buttonTexture = _content.Load<Texture2D>("Controls/Button");
-            var buttonFont = _content.Load<SpriteFont>("HudFont");
+            titleFont = Art.TitleFont;
+            hudFont = Art.HudFont;
 
-            var newGameButton = new Button(buttonTexture, buttonFont)
+            var newGameButton = new Button()
             {
-                Position = new Vector2(CenterWidth, 250),
                 Text = "New Game",
             };
 
             newGameButton.Click += NewGameButton_Click;
 
-            var mainMenuButton = new Button(buttonTexture, buttonFont)
+            var mainMenuButton = new Button()
             {
-                Position = new Vector2(CenterWidth, 250),
                 Text = "Main Menu",
             };
 
             mainMenuButton.Click += MainMenuButton_Click;
 
-            var quitGameButton = new Button(buttonTexture, buttonFont)
+            var quitGameButton = new Button()
             {
-                Position = new Vector2(CenterWidth, 250),
                 Text = "Quit",
             };
 
@@ -64,35 +65,35 @@ namespace FlappyBox.States
 
             // Draw HUD.
             var color = Color.Black;
-            if (GameState.Score >= GameState.HiScore)
+            if (GameState.Score >= GameState.HighScore)
             {
                 color = Color.Yellow;
             }
             spriteBatch.DrawString(
-                GameState.hudFont,
+                hudFont,
                 "Score: " + GameState.Score,
                 new Vector2(32, 64),
                 color
             );
             spriteBatch.DrawString(
-                GameState.hudFont,
-                "Hi Score: " + GameState.HiScore,
+                hudFont,
+                "Hi Score: " + GameState.HighScore,
                 new Vector2(32, 92),
                 color
             );
             spriteBatch.DrawString(
-                GameState.hudFont,
+                hudFont,
                 " x " + GameState.Coins,
-                new Vector2(GameState.coinHUD.X + 16, GameState.coinHUD.Y - 8),
+                new Vector2(GameState.CoinHUD.X + 16, GameState.CoinHUD.Y - 8),
                 Color.Black
             );
-            GameState.coinHUD.coinTexture.DrawFrame(
+            GameState.CoinHUD.coinTexture.DrawFrame(
                 spriteBatch,
-                new Vector2(GameState.coinHUD.X, GameState.coinHUD.Y)
+                new Vector2(GameState.CoinHUD.X, GameState.CoinHUD.Y)
             );
 
             spriteBatch.DrawString(
-                MenuState.titleFont,
+                titleFont,
                 "Game Over",
                 new Vector2(CenterWidth / 2, 128),
                 Color.AliceBlue
@@ -110,7 +111,7 @@ namespace FlappyBox.States
 
         private void MainMenuButton_Click(object sender, EventArgs e)
         {
-            Game1._gameState = null;
+            Game1.GameState = null;
             GameState.Score = 0;
             GameState.Coins = 0;
             _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
@@ -132,7 +133,7 @@ namespace FlappyBox.States
 
             Background.Update(gameTime);
 
-            GameState.coinHUD.coinTexture.UpdateFrame(elapsed);
+            GameState.CoinHUD.coinTexture.UpdateFrame(elapsed);
 
             // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();
@@ -150,7 +151,7 @@ namespace FlappyBox.States
 
         public void NewGame()
         {
-            Game1._gameState = null;
+            Game1.GameState = null;
             GameState.Score = 0;
             GameState.Coins = 0;
             _game.ChangeState(new GameState(_game, _graphicsDevice, _content));

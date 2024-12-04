@@ -70,15 +70,15 @@ namespace FlappyBox.States
                 switch (Trophys[i].Name)
                 {
                     case "Tiny Wings":
-                        if (GameState.HiScore >= 1000)
+                        if (GameState.HighScore >= 1000)
                             Trophys[i].Locked = false; break;
 
                     case "Angry Birds":
-                        if (GameState.HiScore >= 5000)
+                        if (GameState.HighScore >= 5000)
                             Trophys[i].Locked = false; break;
 
                     case "Flight Simulator":
-                        if (GameState.HiScore >= 10000)
+                        if (GameState.HighScore >= 10000)
                             Trophys[i].Locked = false; break;
 
                     case "Sunscreen":
@@ -92,7 +92,7 @@ namespace FlappyBox.States
                         } break;
 
                     case "Bezos":
-                        if (GameState.Coins >= 100)
+                        if (GameState.TotalCoins >= 100)
                             Trophys[i].Locked = false; break;
                 }
             }
@@ -205,9 +205,6 @@ namespace FlappyBox.States
         //        }
         //        Console.WriteLine("Skin Locked.");
         //    }
-
-        //    Util.SaveGameData(GameState.Score, GameState.Coins);
-        //    Util.SaveSkinData();
         //}
 
         private void BackButton_Click(object sender, EventArgs e)
@@ -305,8 +302,6 @@ namespace FlappyBox.States
 
             Background.Update(gameTime);
 
-            //GameState.CoinHUD.coinTexture.UpdateFrame(elapsed);
-
             // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();
 
@@ -327,19 +322,15 @@ namespace FlappyBox.States
             _previousKeyboard = _currentKeyboard;
             _currentKeyboard = Keyboard.GetState();
             // Left.
-            if (_currentKeyboard.IsKeyDown(Keys.Left) && !_previousKeyboard.IsKeyDown(Keys.Left))
-            {
-                //this.LeftArrowKey(-1);
-                Util.SaveGameData(GameState.Score, GameState.Coins);
-                Util.SaveSkinData();
-            }
+            //if (_currentKeyboard.IsKeyDown(Keys.Left) && !_previousKeyboard.IsKeyDown(Keys.Left))
+            //{
+            //    //this.LeftArrowKey(-1);
+            //}
             // Right.
-            if (_currentKeyboard.IsKeyDown(Keys.Right) && !_previousKeyboard.IsKeyDown(Keys.Right))
-            {
-                //this.RightArrowKey();
-                Util.SaveGameData(GameState.Score, GameState.Coins);
-                Util.SaveSkinData();
-            }
+            //if (_currentKeyboard.IsKeyDown(Keys.Right) && !_previousKeyboard.IsKeyDown(Keys.Right))
+            //{
+            //    //this.RightArrowKey();
+            //}
             // Enter.
             if (_currentKeyboard.IsKeyDown(Keys.Enter) && !_previousKeyboard.IsKeyUp(Keys.Enter))
             {

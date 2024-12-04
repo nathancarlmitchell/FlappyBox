@@ -6,55 +6,54 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using FlappyBox.Controls;
+using System.Xml.Linq;
 
 namespace FlappyBox.States
 {
     public class MenuState : State
     {
         private List<Button> _components;
-        public static SpriteFont titleFont;
         private Menu _mainMenu;
+        private SpriteFont titleFont;
 
         public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-            : base(game, graphicsDevice, content)
+            : base()
         {
             new GameState(_game, _graphicsDevice, _content);
 
             _game.IsMouseVisible = true;
 
-            titleFont = _content.Load<SpriteFont>("TitleFont");
+            titleFont = Art.TitleFont;
 
-            var buttonTexture = _content.Load<Texture2D>("Controls/Button");
-            var buttonFont = _content.Load<SpriteFont>("HudFont");
-
-            MenuState.ControlWidthCenter =
-                (_graphicsDevice.Viewport.Width / 2) - (buttonTexture.Width / 2);
-
-            var newGameButton = new Button(buttonTexture, buttonFont)
+            var newGameButton = new Button()
             {
-                Position = new Vector2(CenterWidth, 200),
                 Text = "New Game",
             };
 
             newGameButton.Click += NewGameButton_Click;
 
-            var loadSkinsButton = new Button(buttonTexture, buttonFont)
+            var loadSkinsButton = new Button()
             {
-                Position = new Vector2(CenterWidth, 250),
                 Text = "Skins",
             };
 
-            loadSkinsButton.Click += loadSkinsButton_Click;
+            loadSkinsButton.Click += LoadSkinsButton_Click;
 
-            var quitGameButton = new Button(buttonTexture, buttonFont)
+            var trophyButton = new Button()
             {
-                Position = new Vector2(CenterWidth, 300),
+                Text = "Achievements",
+            };
+
+            trophyButton.Click += TrophyButton_Click;
+
+            var quitGameButton = new Button()
+            {
                 Text = "Quit",
             };
 
             quitGameButton.Click += QuitGameButton_Click;
 
-            _components = new List<Button>() { newGameButton, loadSkinsButton, quitGameButton };
+            _components = new List<Button>() { newGameButton, loadSkinsButton, trophyButton, quitGameButton };
 
             _mainMenu = new Menu(_components);
         }
@@ -73,19 +72,19 @@ namespace FlappyBox.States
             spriteBatch.DrawString(
                 titleFont,
                 "Flappy Box",
-                new Vector2(CenterWidth / 2, 128),
+                new Vector2((titleFont.MeasureString("Flappy Box").X / 2), 128),
                 Color.AliceBlue
             );
 
             spriteBatch.End();
         }
 
-        public void onClick()
+        private void TrophyButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+            _game.ChangeState(new TrophyState(_game, _graphicsDevice, _content));
         }
 
-        private void loadSkinsButton_Click(object sender, EventArgs e)
+        private void LoadSkinsButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(new SkinsState(_game, _graphicsDevice, _content));
         }
@@ -93,6 +92,10 @@ namespace FlappyBox.States
         private void NewGameButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+        }
+        private void QuitGameButton_Click(object sender, EventArgs e)
+        {
+            _game.Exit();
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -118,11 +121,6 @@ namespace FlappyBox.States
             {
                 _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
             }
-        }
-
-        private void QuitGameButton_Click(object sender, EventArgs e)
-        {
-            _game.Exit();
         }
     }
 }
