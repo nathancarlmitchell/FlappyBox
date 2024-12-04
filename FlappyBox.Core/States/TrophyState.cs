@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using FlappyBox.Controls;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FlappyBox.States
 {
@@ -15,7 +16,7 @@ namespace FlappyBox.States
             _previousKeyboard;
         private List<Button> _components;
         private Menu _menu;
-        private AnimatedTexture _trophySprite;
+        private AnimatedTexture trophySprite;
         private SpriteFont hudFont;
 
         public static List<Trophy> Trophys { get; set; }
@@ -29,8 +30,9 @@ namespace FlappyBox.States
 
             hudFont = Art.HudFont;
 
-            _trophySprite = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
-            _trophySprite.Load(_content, "trophy", 1, 1);
+            trophySprite = Art.TrophySprite;
+            //_trophySprite = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
+            //_trophySprite.Load(_content, "trophy", 1, 1);
 
             var backButton = new Button()
             {
@@ -67,12 +69,34 @@ namespace FlappyBox.States
             {
                 switch (Trophys[i].Name)
                 {
-                    case "Trophy":
-                        Trophys[i].Locked = false; break;
-                    case "Secret":
-                        Trophys[i].Locked = true; break;
+                    case "Tiny Wings":
+                        if (GameState.HiScore >= 1000)
+                            Trophys[i].Locked = false; break;
+
+                    case "Angry Birds":
+                        if (GameState.HiScore >= 5000)
+                            Trophys[i].Locked = false; break;
+
+                    case "Flight Simulator":
+                        if (GameState.HiScore >= 10000)
+                            Trophys[i].Locked = false; break;
+
+                    case "Sunscreen":
+                        Trophys[i].Locked = false;
+                        for (int x = 0; x < SkinsState.Skins.Count; x++)
+                        {
+                            if (SkinsState.Skins[x].Locked)
+                            {
+                                Trophys[i].Locked = true;
+                            }
+                        } break;
+
+                    case "Bezos":
+                        if (GameState.Coins >= 100)
+                            Trophys[i].Locked = false; break;
                 }
             }
+            Util.SaveTrophyData();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -83,57 +107,66 @@ namespace FlappyBox.States
             Background.Draw(gameTime, spriteBatch);
 
             // Draw coins on HUD.
-            spriteBatch.DrawString(
-                hudFont,
-                " x " + GameState.Coins,
-                new Vector2(GameState.coinHUD.X + 16, GameState.coinHUD.Y - 8),
-                Color.Black
-            );
-            GameState.coinHUD.coinTexture.DrawFrame(
-                spriteBatch,
-                new Vector2(GameState.coinHUD.X, GameState.coinHUD.Y)
-            );
+            //spriteBatch.DrawString(
+            //    hudFont,
+            //    " x " + GameState.Coins,
+            //    new Vector2(GameState.CoinHUD.X + 16, GameState.CoinHUD.Y - 8),
+            //    Color.Black
+            //);
+            //GameState.CoinHUD.coinTexture.DrawFrame(
+            //    spriteBatch,
+            //    new Vector2(GameState.CoinHUD.X, GameState.CoinHUD.Y)
+            //);
 
             // Draw trophys.
             for (int i = 0; i < Trophys.Count; i++)
             {
                 int _centerComponent = Trophys.Count / 2;
                 int _difference = i - _centerComponent;
-                int _x = MenuState.CenterWidth + _difference * 150 - (64 / Trophys.Count);
+                int _x = MenuState.CenterWidth + _difference * 175 - (64 / Trophys.Count);
                 int _y = MenuState.CenterHeight - 128 - 16;
 
                 string name = "???";
                 string description = "???";
+                Color titleColor = Color.White;
 
                 if (!Trophys[i].Locked)
                 {
                     name = Trophys[i].Name;
                     description = Trophys[i].Description;
+                    titleColor = Color.Gold;
                 }
 
+                // Draw trophy name.
                 spriteBatch.DrawString(
                     hudFont,
                     name,
-                    new Vector2(_x, _y + 72),
-                    Color.Black
+                    new Vector2(_x - (hudFont.MeasureString(name).X / 2) + (trophySprite.Width / 2), _y + 72),
+                    titleColor
                 );
 
-                spriteBatch.DrawString(
-                    hudFont,
+                // Draw trophy description if hovering.
+                if (Trophys[i].IsHovering)
+                {
+                    spriteBatch.DrawString(
+                        hudFont,
                     description,
-                    new Vector2(_x, _y - 72),
-                    Color.Black
-                );
+                        new Vector2(_x - (hudFont.MeasureString(description).X / 2) + (trophySprite.Width / 2), _y - 72),
+                        Color.White
+                    );
+                }
 
-                if (Trophys[i].Selected)
-                {
-                    _trophySprite.DrawFrame(spriteBatch, new Vector2(_x, _y - 16 - 64));
-                    Trophys[i].Position = new Vector2(_x, _y - 16);
-                }
-                else
-                {
-                    Trophys[i].Position = new Vector2(_x, _y);
-                }
+                //if (Trophys[i].Selected)
+                //{
+                //    _trophySprite.DrawFrame(spriteBatch, new Vector2(_x, _y - 16 - 64));
+                //    Trophys[i].Position = new Vector2(_x, _y - 16);
+                //}
+                //else
+                //{
+                //    Trophys[i].Position = new Vector2(_x, _y);
+                //}
+
+                Trophys[i].Position = new Vector2(_x, _y);
 
                 Trophys[i].Draw(spriteBatch);
             }
@@ -272,7 +305,7 @@ namespace FlappyBox.States
 
             Background.Update(gameTime);
 
-            GameState.coinHUD.coinTexture.UpdateFrame(elapsed);
+            //GameState.CoinHUD.coinTexture.UpdateFrame(elapsed);
 
             // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();

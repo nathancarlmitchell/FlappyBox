@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using FlappyBox.Controls;
+using static System.Formats.Asn1.AsnWriter;
+using System.Drawing;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace FlappyBox.States
 {
@@ -17,6 +20,8 @@ namespace FlappyBox.States
         : base()
         {
             _game.IsMouseVisible = true;
+
+            Background.Alpha(0.5);
 
             var continueGameButton = new Button()
             {
@@ -53,8 +58,28 @@ namespace FlappyBox.States
         {
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(Art.HudFont, "Paused: " + GameState.Score, new Vector2(ControlWidthCenter, CenterHeight/2),
-                Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            Background.Draw(gameTime, spriteBatch);
+
+            // Draw HUD.
+            var color = Color.Black;
+            if (GameState.Score >= GameState.HiScore)
+            {
+                color = Color.Yellow;
+            }
+            spriteBatch.DrawString(Art.HudFont, "Score: " + GameState.Score, new Vector2(32, 64), color);
+            spriteBatch.DrawString(Art.HudFont, "Hi Score: " + GameState.HiScore, new Vector2(32, 92), color);
+            spriteBatch.DrawString(
+                Art.HudFont,
+                " x " + GameState.Coins,
+                new Vector2(GameState.CoinHUD.X + 16, GameState.CoinHUD.Y - 8),
+                Color.Black
+            );
+            GameState.CoinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(GameState.CoinHUD.X, GameState.CoinHUD.Y));
+
+            spriteBatch.DrawString(Art.TitleFont, "Paused", new Vector2(Game1.ScreenWidth / 2 - (Art.TitleFont.MeasureString("Paused").X / 2), CenterHeight / 2),
+                Color.White, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+
+            GameState.Player.Draw(spriteBatch);
 
             _menu.Draw(gameTime, spriteBatch);
 
@@ -64,6 +89,8 @@ namespace FlappyBox.States
         private void ContinueGame()
         {
             _game.ChangeState(Game1.GameState);
+            Game1.Instance.IsMouseVisible = false;
+            Background.SetAlpha(100);
         }
 
         private void ContinueGameButton_Click(object sender, EventArgs e)

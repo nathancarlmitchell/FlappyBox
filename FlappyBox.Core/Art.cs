@@ -10,6 +10,7 @@ namespace FlappyBox
         public static Texture2D ButtonTexture { get; private set; }
         public static Texture2D BackgroundTexture { get; private set; }
         public static Texture2D CloudTexture { get; private set; }
+        public static AnimatedTexture TrophySprite { get; private set; }
         public static AnimatedTexture ArrowSprite {  get; private set; }
         public static SpriteFont HudFont { get; private set; }
         public static SpriteFont TitleFont { get; private set; }
@@ -21,6 +22,9 @@ namespace FlappyBox
 
             BackgroundTexture = content.Load<Texture2D>("bg");
             CloudTexture = content.Load<Texture2D>("cloud");
+
+            TrophySprite = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
+            TrophySprite.Load(content, "trophy", 1, 1);
 
             ArrowSprite = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
             ArrowSprite.Load(content, "arrow", 4, 4);

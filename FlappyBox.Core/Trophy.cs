@@ -18,7 +18,8 @@ namespace FlappyBox
         private AnimatedTexture _texture;
         private MouseState _currentMouse,
             _previousMouse;
-        private bool _isHovering;
+
+        public bool IsHovering;
 
         public int Frames = 1;
         public int FPS = 1;
@@ -41,8 +42,7 @@ namespace FlappyBox
             //this.Name = texture;
 
             // Load the texture.
-            _texture = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
-            _texture.Load(_content, "trophy", Frames, FPS);
+            _texture = Art.TrophySprite;
         }
 
         public void Update(GameTime gameTime, TouchCollection touchCollection)
@@ -54,11 +54,11 @@ namespace FlappyBox
 
             var mouseRectangle = new Rectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
 
-            _isHovering = false;
+            IsHovering = false;
 
             if (mouseRectangle.Intersects(Rectangle))
             {
-                _isHovering = true;
+                IsHovering = true;
 
                 if (
                     _currentMouse.LeftButton == ButtonState.Released
@@ -96,7 +96,7 @@ namespace FlappyBox
                 color = Color.White;
             }
 
-            if (!this.Locked && _isHovering)
+            if (!this.Locked && IsHovering)
             {
                 color = Color.AntiqueWhite;
             }

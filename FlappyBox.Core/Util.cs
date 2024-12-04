@@ -6,6 +6,8 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.Xna.Framework.Content;
 using FlappyBox.States;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace FlappyBox
 {
@@ -28,8 +30,11 @@ namespace FlappyBox
                 {""Name"":""anim_idle_tv"",""Selected"":false,""Locked"":true,""Cost"":15,""Frames"":4,""FPS"":16}]";
 
         private static readonly string defaultTrophyData =
-            @"[{""Name"":""Trophy"",""Selected"":false,""Locked"":false,""Description"":""Congrats"",""Frames"": 1,""FPS"": 1},
-                {""Name"":""Secret"",""Selected"":false,""Locked"":true,""Description"":""???"",""Frames"": 1,""FPS"": 1}]";
+            @"[{""Name"":""Tiny Wings"",""Selected"":false,""Locked"":true,""Description"":""Score 1,000 points"",""Frames"": 1,""FPS"": 1},
+                {""Name"":""Angry Birds"",""Selected"":false,""Locked"":true,""Description"":""Score 5,000 points"",""Frames"": 1,""FPS"": 1},
+                {""Name"":""Flight Simulator"",""Selected"":false,""Locked"":true,""Description"":""Score 10,000 points"",""Frames"": 1,""FPS"": 1},
+                {""Name"":""Sunscreen"",""Selected"":false,""Locked"":true,""Description"":""Unlock all skins"",""Frames"": 1,""FPS"": 1},
+                {""Name"":""Bezos"",""Selected"":false,""Locked"":true,""Description"":""Save 100 coins"",""Frames"": 1,""FPS"": 1}]";
 
         public static void CheckOS()
         {
@@ -92,6 +97,7 @@ namespace FlappyBox
             gameData.Coins = currentCoins;
             json = JsonSerializer.Serialize(gameData);
             File.WriteAllText(gameDataLocation, json);
+            Debug.WriteLine("GameData Saved.");
         }
 
         public static void LoadSkinData(ContentManager content)
@@ -154,6 +160,7 @@ namespace FlappyBox
                 }
                 string json = JsonSerializer.Serialize(skinData);
                 File.WriteAllText(skinDataLocation, json);
+                Debug.WriteLine("SkinData Saved.");
             }
         }
 
@@ -203,6 +210,61 @@ namespace FlappyBox
                 }
                 LoadTrophyData(content);
             }
+        }
+
+        public static void SaveTrophyData()
+        {
+            if (TrophyState.Trophys is not null)
+            {
+                List<TrophyData> trophyData = new List<TrophyData>();
+                for (int i = 0; i < TrophyState.Trophys.Count; i++)
+                {
+                    TrophyData trophy = new()
+                    {
+                        Name = TrophyState.Trophys[i].Name,
+                        Selected = TrophyState.Trophys[i].Selected,
+                        Locked = TrophyState.Trophys[i].Locked,
+                        Description = TrophyState.Trophys[i].Description,
+                        Frames = TrophyState.Trophys[i].Frames,
+                        FPS = TrophyState.Trophys[i].FPS,
+                    };
+                    trophyData.Add(trophy);
+                }
+                string json = JsonSerializer.Serialize(trophyData);
+                File.WriteAllText(trophyDataLocation, json);
+                Debug.WriteLine("TrophyData Saved.");
+            }
+        }
+
+        public static int CenterText(String text, SpriteFont font, int x)
+        {
+            return x - ((int)font.MeasureString(text).X / 2);
+        }
+
+        public static string WrapText(SpriteFont spriteFont, string text, float maxLineWidth)
+        {
+            string[] words = text.Split(' ');
+            StringBuilder sb = new StringBuilder();
+            float lineWidth = 0f;
+            float spaceWidth = spriteFont.MeasureString(" ").X;
+
+            foreach (string word in words)
+            {
+                Vector2 size = spriteFont.MeasureString(word);
+
+                if (lineWidth + size.X < maxLineWidth)
+                {
+                    sb.Append(word + " ");
+                    lineWidth += size.X + spaceWidth;
+                }
+                else
+                {
+                    sb.Append("\n" + word + " ");
+                    lineWidth = size.X + spaceWidth;
+                }
+            }
+
+            return sb.ToString();
         }
     }
 }

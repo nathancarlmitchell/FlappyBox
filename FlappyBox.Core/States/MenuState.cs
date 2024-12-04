@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using FlappyBox.Controls;
+using System.Xml.Linq;
 
 namespace FlappyBox.States
 {
@@ -44,7 +45,7 @@ namespace FlappyBox.States
 
             var trophyButton = new Button()
             {
-                Text = "Achievments",
+                Text = "Achievements",
             };
 
             trophyButton.Click += TrophyButton_Click;
@@ -75,7 +76,7 @@ namespace FlappyBox.States
             spriteBatch.DrawString(
                 titleFont,
                 "Flappy Box",
-                new Vector2(CenterWidth / 2, 128),
+                new Vector2((titleFont.MeasureString("Flappy Box").X / 2), 128),
                 Color.AliceBlue
             );
 

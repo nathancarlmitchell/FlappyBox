@@ -33,6 +33,11 @@ namespace FlappyBox
             targetAlpha = _alpha;
         }
 
+        public static void Alpha(double _alpha)
+        {
+            alpha = _alpha;
+        }
+
         public static void UpdateAlpha()
         {
             if (alpha < targetAlpha)
