@@ -41,11 +41,7 @@
     <AndroidAsset Remove="Content\coin.png" />
     <AndroidAsset Remove="Content\Content.mgcb" />
     <AndroidAsset Remove="Content\Controls\Button.png" />
-    <AndroidAsset Remove="Content\DebugFont.spritefont" />
-    <AndroidAsset Remove="Content\HudFont.spritefont" />
-    <AndroidAsset Remove="Content\HudMobileFont.spritefont" />
     <AndroidAsset Remove="Content\locked.png" />
-    <AndroidAsset Remove="Content\TitleFont.spritefont" />
     <AndroidAsset Remove="Content\wall.png" />
     <AndroidAsset Remove="Content\wing_left.png" />
     <AndroidAsset Remove="Content\wing_right.png" />
@@ -82,13 +78,13 @@
     <None Remove="Content\border.png" />
     <None Remove="Content\cloud.png" />
     <None Remove="Content\coin.png" />
-    <None Remove="Content\Content.mgcb" />
     <None Remove="Content\Controls\Button.png" />
-    <None Remove="Content\DebugFont.spritefont" />
-    <None Remove="Content\HudFont.spritefont" />
-    <None Remove="Content\HudMobileFont.spritefont" />
+    <None Remove="Content\Fonts\DebugFont.spritefont" />
+    <None Remove="Content\Fonts\HudFont.spritefont" />
+    <None Remove="Content\Fonts\HudMobileFont.spritefont" />
+    <None Remove="Content\Fonts\TitleFont.spritefont" />
     <None Remove="Content\locked.png" />
-    <None Remove="Content\TitleFont.spritefont" />
+    <None Remove="Content\trophy.png" />
     <None Remove="Content\wall.png" />
     <None Remove="Content\wing_left.png" />
     <None Remove="Content\wing_right.png" />
@@ -121,11 +117,7 @@
     <AndroidAsset Include="Content\bin\Android\Content\cloud.xnb" />
     <AndroidAsset Include="Content\bin\Android\Content\coin.xnb" />
     <AndroidAsset Include="Content\bin\Android\Content\Controls\Button.xnb" />
-    <AndroidAsset Include="Content\bin\Android\Content\DebugFont.xnb" />
-    <AndroidAsset Include="Content\bin\Android\Content\HudFont.xnb" />
-    <AndroidAsset Include="Content\bin\Android\Content\HudMobileFont.xnb" />
     <AndroidAsset Include="Content\bin\Android\Content\locked.xnb" />
-    <AndroidAsset Include="Content\bin\Android\Content\TitleFont.xnb" />
     <AndroidAsset Include="Content\bin\Android\Content\wall.xnb" />
     <AndroidAsset Include="Content\bin\Android\Content\wing_left.xnb" />
     <AndroidAsset Include="Content\bin\Android\Content\wing_right.xnb" />
@@ -158,11 +150,7 @@
     <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\cloud.mgcontent" />
     <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\coin.mgcontent" />
     <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\Controls\Button.mgcontent" />
-    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\DebugFont.mgcontent" />
-    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\HudFont.mgcontent" />
-    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\HudMobileFont.mgcontent" />
     <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\locked.mgcontent" />
-    <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\TitleFont.mgcontent" />
     <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\wall.mgcontent" />
     <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\wing_left.mgcontent" />
     <AndroidAsset Include="Content\obj\Android\net8.0-android\Content\wing_right.mgcontent" />
@@ -261,25 +249,25 @@
     <Content Include="Content\coin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Content.mgcb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\Controls\Button.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\DebugFont.spritefont">
+    <Content Include="Content\Fonts\DebugFont.spritefont">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\HudFont.spritefont">
+    <Content Include="Content\Fonts\HudFont.spritefont">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\HudMobileFont.spritefont">
+    <Content Include="Content\Fonts\HudMobileFont.spritefont">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Fonts\TitleFont.spritefont">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\locked.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\TitleFont.spritefont">
+    <Content Include="Content\trophy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\wall.png">
@@ -298,6 +286,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FlappyBox.Core\FlappyBox.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Content\Content.mgcb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />
