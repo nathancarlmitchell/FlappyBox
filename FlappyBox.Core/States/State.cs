@@ -23,19 +23,19 @@ namespace FlappyBox.States
 
         public abstract void PostUpdate(GameTime gameTime);
 
-        public State()
+        public State(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
         {
-            _game = Game1.Instance;
-            _graphicsDevice = Game1.Instance.GraphicsDevice;
-            _content = Game1.Instance.Content;
+            _game = game;
+            _graphicsDevice = graphicsDevice;
+            _content = content;
 
-            _centerWidth = (Game1.ScreenWidth / 2);
-            _centerHeight = (Game1.ScreenHeight / 2);
+            _centerWidth = (_graphicsDevice.Viewport.Width / 2);
+            _centerHeight = (_graphicsDevice.Viewport.Height / 2);
 
-            _screenWidth = Game1.ScreenWidth;
-            _screenHeight = Game1.ScreenHeight;
+            _screenHeight = _graphicsDevice.Viewport.Height;
+            _screenWidth = _graphicsDevice.Viewport.Width;
 
-            _controlWidthCenter = (Game1.ScreenWidth / 2) - (Art.ButtonTexture.Width / 2 * Game1.Scale);
+            _controlWidthCenter = (_graphicsDevice.Viewport.Width / 2) - 80;
         }
 
         public static int ScreenHeight

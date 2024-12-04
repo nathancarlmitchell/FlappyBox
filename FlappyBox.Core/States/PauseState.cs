@@ -6,9 +6,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using FlappyBox.Controls;
-using static System.Formats.Asn1.AsnWriter;
-using System.Drawing;
-using Color = Microsoft.Xna.Framework.Color;
 
 namespace FlappyBox.States
 {
@@ -17,28 +14,32 @@ namespace FlappyBox.States
         private List<Button> _components;
         private Menu _menu;
         public PauseState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-        : base()
+        : base(game, graphicsDevice, content)
         {
             _game.IsMouseVisible = true;
 
-            Background.Alpha(0.5);
+            var buttonTexture = _content.Load<Texture2D>("Controls/Button");
+            var buttonFont = _content.Load<SpriteFont>("HudFont");
 
-            var continueGameButton = new Button()
+            var continueGameButton = new Button(buttonTexture, buttonFont)
             {
+                Position = new Vector2(CenterWidth, 250),
                 Text = "Continue",
             };
 
             continueGameButton.Click += ContinueGameButton_Click;
 
-            var mainMenuButton = new Button()
+            var mainMenuButton = new Button(buttonTexture, buttonFont)
             {
+                Position = new Vector2(CenterWidth, 250),
                 Text = "Main Menu",
             };
 
             mainMenuButton.Click += MainMenuButton_Click;
 
-            var quitGameButton = new Button()
+            var quitGameButton = new Button(buttonTexture, buttonFont)
             {
+                Position = new Vector2(CenterWidth, 300),
                 Text = "Quit",
             };
 
@@ -58,50 +59,23 @@ namespace FlappyBox.States
         {
             spriteBatch.Begin();
 
-            Background.Draw(gameTime, spriteBatch);
-
-            // Draw HUD.
-            var color = Color.Black;
-            if (GameState.Score >= GameState.HiScore)
-            {
-                color = Color.Yellow;
-            }
-            spriteBatch.DrawString(Art.HudFont, "Score: " + GameState.Score, new Vector2(32, 64), color);
-            spriteBatch.DrawString(Art.HudFont, "Hi Score: " + GameState.HiScore, new Vector2(32, 92), color);
-            spriteBatch.DrawString(
-                Art.HudFont,
-                " x " + GameState.Coins,
-                new Vector2(GameState.CoinHUD.X + 16, GameState.CoinHUD.Y - 8),
-                Color.Black
-            );
-            GameState.CoinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(GameState.CoinHUD.X, GameState.CoinHUD.Y));
-
-            spriteBatch.DrawString(Art.TitleFont, "Paused", new Vector2(Game1.ScreenWidth / 2 - (Art.TitleFont.MeasureString("Paused").X / 2), CenterHeight / 2),
-                Color.White, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
-
-            GameState.Player.Draw(spriteBatch);
+            spriteBatch.DrawString(GameState.hudFont, "Paused: " + GameState.Score, new Vector2(ControlWidthCenter, CenterHeight/2),
+                Color.Black, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
 
             _menu.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
         }
 
-        private void ContinueGame()
-        {
-            _game.ChangeState(Game1.GameState);
-            Game1.Instance.IsMouseVisible = false;
-            Background.SetAlpha(100);
-        }
-
         private void ContinueGameButton_Click(object sender, EventArgs e)
         {
-            ContinueGame();
+            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
         }
 
         private void MainMenuButton_Click(object sender, EventArgs e)
         {
             _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
-            Game1.GameState = null;
+            Game1._gameState = null;
         }
 
         private void QuitGameButton_Click(object sender, EventArgs e)
@@ -127,7 +101,7 @@ namespace FlappyBox.States
             // Check player input.
             if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
-                ContinueGame();
+                _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
             }
         }
     }

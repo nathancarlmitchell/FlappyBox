@@ -1,13 +1,10 @@
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Xna.Framework.Content;
 using FlappyBox.States;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
 
 namespace FlappyBox
 {
@@ -15,10 +12,8 @@ namespace FlappyBox
     {
         private static string gameDataLocation = "GameData.json";
         private static string skinDataLocation = "SkinData.json";
-        private static string trophyDataLocation = "TrophyData.json";
-
+        private static readonly string androidContext = "/data/data/FlappyBox.Android/files/";
         private static readonly string defaultGameData = @"{""HighScore"":0,""Coins"":0}";
-
         private static readonly string defaultSkinData =
             @"[{""Name"":""anim_idle_default"",""Selected"":true,""Locked"":false,""Cost"":0,""Frames"":2,""FPS"":2},
                 {""Name"":""anim_idle_pink"",""Selected"":false,""Locked"":true,""Cost"":3,""Frames"":2,""FPS"":2},
@@ -29,22 +24,13 @@ namespace FlappyBox
                 {""Name"":""anim_idle_locked"",""Selected"":false,""Locked"":true,""Cost"":10,""Frames"":2,""FPS"":2},
                 {""Name"":""anim_idle_tv"",""Selected"":false,""Locked"":true,""Cost"":15,""Frames"":4,""FPS"":16}]";
 
-        private static readonly string defaultTrophyData =
-            @"[{""Name"":""Tiny Wings"",""Selected"":false,""Locked"":true,""Description"":""Score 1,000 points"",""Frames"": 1,""FPS"": 1},
-                {""Name"":""Angry Birds"",""Selected"":false,""Locked"":true,""Description"":""Score 5,000 points"",""Frames"": 1,""FPS"": 1},
-                {""Name"":""Flight Simulator"",""Selected"":false,""Locked"":true,""Description"":""Score 10,000 points"",""Frames"": 1,""FPS"": 1},
-                {""Name"":""Sunscreen"",""Selected"":false,""Locked"":true,""Description"":""Unlock all skins"",""Frames"": 1,""FPS"": 1},
-                {""Name"":""Bezos"",""Selected"":false,""Locked"":true,""Description"":""Save 100 coins"",""Frames"": 1,""FPS"": 1}]";
-
         public static void CheckOS()
         {
             if (OperatingSystem.IsAndroid())
             {
-                Debug.WriteLine("Device running Android.");
-                // AppContext.BaseDirectory = "/data/user/0/FlappyBox.Android/files".
-                gameDataLocation = AppContext.BaseDirectory + "/" + gameDataLocation;
-                skinDataLocation = AppContext.BaseDirectory + "/" + skinDataLocation;
-                trophyDataLocation = AppContext.BaseDirectory + "/" + trophyDataLocation;
+                Console.WriteLine("Device running Android.");
+                gameDataLocation = androidContext + gameDataLocation;
+                skinDataLocation = androidContext + skinDataLocation;
             }
         }
 
@@ -56,7 +42,7 @@ namespace FlappyBox
             {
                 using (StreamReader r = new StreamReader(gameDataLocation))
                 {
-                    Debug.WriteLine(gameDataLocation + ": reading data.");
+                    Console.WriteLine(gameDataLocation + ": reading data.");
                     string json = r.ReadToEnd();
                     gameData = JsonSerializer.Deserialize<GameData>(json);
                 }
@@ -66,10 +52,10 @@ namespace FlappyBox
             }
             catch (System.IO.FileNotFoundException)
             {
-                Debug.WriteLine(gameDataLocation + ": file not found.");
+                Console.WriteLine(gameDataLocation + ": file not found.");
                 using (FileStream fs = File.Create(gameDataLocation))
                 {
-                    Debug.WriteLine(gameDataLocation + ": file created.");
+                    Console.WriteLine(gameDataLocation + ": file created.");
                     byte[] data = new UTF8Encoding(true).GetBytes(defaultGameData);
                     fs.Write(data, 0, data.Length);
                 }
@@ -97,7 +83,6 @@ namespace FlappyBox
             gameData.Coins = currentCoins;
             json = JsonSerializer.Serialize(gameData);
             File.WriteAllText(gameDataLocation, json);
-            Debug.WriteLine("GameData Saved.");
         }
 
         public static void LoadSkinData(ContentManager content)
@@ -109,7 +94,7 @@ namespace FlappyBox
             {
                 using (StreamReader r = new StreamReader(skinDataLocation))
                 {
-                    Debug.WriteLine(skinDataLocation + ": reading data.");
+                    Console.WriteLine(skinDataLocation + ": reading data.");
                     string json = r.ReadToEnd();
                     skinData = JsonSerializer.Deserialize<List<SkinData>>(json);
                     for (int i = 0; i < skinData.Count; i++)
@@ -130,10 +115,10 @@ namespace FlappyBox
             }
             catch (System.IO.FileNotFoundException)
             {
-                Debug.WriteLine(skinDataLocation + ": file not found.");
+                Console.WriteLine(skinDataLocation + ": file not found.");
                 using (FileStream fs = File.Create(skinDataLocation))
                 {
-                    Debug.WriteLine(skinDataLocation + ": file created.");
+                    Console.WriteLine(skinDataLocation + ": file created.");
                     byte[] data = new UTF8Encoding(true).GetBytes(defaultSkinData);
                     fs.Write(data, 0, data.Length);
                 }
@@ -160,111 +145,7 @@ namespace FlappyBox
                 }
                 string json = JsonSerializer.Serialize(skinData);
                 File.WriteAllText(skinDataLocation, json);
-                Debug.WriteLine("SkinData Saved.");
             }
-        }
-
-        public static void LoadTrophyData(ContentManager content)
-        {
-            List<TrophyData> trophyData = new List<TrophyData>();
-            TrophyState.Trophys = new List<Trophy>();
-
-            try
-            {
-                using (StreamReader r = new StreamReader(trophyDataLocation))
-                {
-                    Debug.WriteLine(trophyDataLocation + ": reading data.");
-                    string json = r.ReadToEnd();
-                    try
-                    {
-                        trophyData = JsonSerializer.Deserialize<List<TrophyData>>(json);
-                    }
-                    catch (System.Text.Json.JsonException)
-                    {
-                        Debug.WriteLine("Invalid JSON:" + json);
-                    }
-                    for (int i = 0; i < trophyData.Count; i++)
-                    {
-                        Trophy trophy = new(content, trophyData[i].Name)
-                        {
-                            Name = trophyData[i].Name,
-                            Selected = trophyData[i].Selected,
-                            Locked = trophyData[i].Locked,
-                            Description = trophyData[i].Description,
-                            Frames = trophyData[i].Frames,
-                            FPS = trophyData[i].FPS,
-                        };
-                        //trophy.LoadTexture(content, skin.Name);
-                        TrophyState.Trophys.Add(trophy);
-                    }
-                }
-            }
-            catch (System.IO.FileNotFoundException)
-            {
-                Debug.WriteLine(trophyDataLocation + ": file not found.");
-                using (FileStream fs = File.Create(trophyDataLocation))
-                {
-                    Debug.WriteLine(trophyDataLocation + ": file created.");
-                    byte[] data = new UTF8Encoding(true).GetBytes(defaultTrophyData);
-                    fs.Write(data, 0, data.Length);
-                }
-                LoadTrophyData(content);
-            }
-        }
-
-        public static void SaveTrophyData()
-        {
-            if (TrophyState.Trophys is not null)
-            {
-                List<TrophyData> trophyData = new List<TrophyData>();
-                for (int i = 0; i < TrophyState.Trophys.Count; i++)
-                {
-                    TrophyData trophy = new()
-                    {
-                        Name = TrophyState.Trophys[i].Name,
-                        Selected = TrophyState.Trophys[i].Selected,
-                        Locked = TrophyState.Trophys[i].Locked,
-                        Description = TrophyState.Trophys[i].Description,
-                        Frames = TrophyState.Trophys[i].Frames,
-                        FPS = TrophyState.Trophys[i].FPS,
-                    };
-                    trophyData.Add(trophy);
-                }
-                string json = JsonSerializer.Serialize(trophyData);
-                File.WriteAllText(trophyDataLocation, json);
-                Debug.WriteLine("TrophyData Saved.");
-            }
-        }
-
-        public static int CenterText(String text, SpriteFont font, int x)
-        {
-            return x - ((int)font.MeasureString(text).X / 2);
-        }
-
-        public static string WrapText(SpriteFont spriteFont, string text, float maxLineWidth)
-        {
-            string[] words = text.Split(' ');
-            StringBuilder sb = new StringBuilder();
-            float lineWidth = 0f;
-            float spaceWidth = spriteFont.MeasureString(" ").X;
-
-            foreach (string word in words)
-            {
-                Vector2 size = spriteFont.MeasureString(word);
-
-                if (lineWidth + size.X < maxLineWidth)
-                {
-                    sb.Append(word + " ");
-                    lineWidth += size.X + spaceWidth;
-                }
-                else
-                {
-                    sb.Append("\n" + word + " ");
-                    lineWidth = size.X + spaceWidth;
-                }
-            }
-
-            return sb.ToString();
         }
     }
 }

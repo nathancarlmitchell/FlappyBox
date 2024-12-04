@@ -13,11 +13,9 @@ namespace FlappyBox.States
     {
         private List<Button> _components;
         private Menu _menu;
-        private SpriteFont titleFont,
-            hudFont;
 
         public GameOverState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-            : base()
+            : base(game, graphicsDevice, content)
         {
             _game.IsMouseVisible = true;
 
@@ -26,25 +24,28 @@ namespace FlappyBox.States
 
             Background.SetAlpha(0.33f);
 
-            titleFont = Art.TitleFont;
-            hudFont = Art.HudFont;
+            var buttonTexture = _content.Load<Texture2D>("Controls/Button");
+            var buttonFont = _content.Load<SpriteFont>("HudFont");
 
-            var newGameButton = new Button()
+            var newGameButton = new Button(buttonTexture, buttonFont)
             {
+                Position = new Vector2(CenterWidth, 250),
                 Text = "New Game",
             };
 
             newGameButton.Click += NewGameButton_Click;
 
-            var mainMenuButton = new Button()
+            var mainMenuButton = new Button(buttonTexture, buttonFont)
             {
+                Position = new Vector2(CenterWidth, 250),
                 Text = "Main Menu",
             };
 
             mainMenuButton.Click += MainMenuButton_Click;
 
-            var quitGameButton = new Button()
+            var quitGameButton = new Button(buttonTexture, buttonFont)
             {
+                Position = new Vector2(CenterWidth, 250),
                 Text = "Quit",
             };
 
@@ -68,30 +69,30 @@ namespace FlappyBox.States
                 color = Color.Yellow;
             }
             spriteBatch.DrawString(
-                hudFont,
+                GameState.hudFont,
                 "Score: " + GameState.Score,
                 new Vector2(32, 64),
                 color
             );
             spriteBatch.DrawString(
-                hudFont,
+                GameState.hudFont,
                 "Hi Score: " + GameState.HiScore,
                 new Vector2(32, 92),
                 color
             );
             spriteBatch.DrawString(
-                hudFont,
+                GameState.hudFont,
                 " x " + GameState.Coins,
-                new Vector2(GameState.CoinHUD.X + 16, GameState.CoinHUD.Y - 8),
+                new Vector2(GameState.coinHUD.X + 16, GameState.coinHUD.Y - 8),
                 Color.Black
             );
-            GameState.CoinHUD.coinTexture.DrawFrame(
+            GameState.coinHUD.coinTexture.DrawFrame(
                 spriteBatch,
-                new Vector2(GameState.CoinHUD.X, GameState.CoinHUD.Y)
+                new Vector2(GameState.coinHUD.X, GameState.coinHUD.Y)
             );
 
             spriteBatch.DrawString(
-                titleFont,
+                MenuState.titleFont,
                 "Game Over",
                 new Vector2(CenterWidth / 2, 128),
                 Color.AliceBlue
@@ -109,7 +110,7 @@ namespace FlappyBox.States
 
         private void MainMenuButton_Click(object sender, EventArgs e)
         {
-            Game1.GameState = null;
+            Game1._gameState = null;
             GameState.Score = 0;
             GameState.Coins = 0;
             _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
@@ -131,7 +132,7 @@ namespace FlappyBox.States
 
             Background.Update(gameTime);
 
-            GameState.CoinHUD.coinTexture.UpdateFrame(elapsed);
+            GameState.coinHUD.coinTexture.UpdateFrame(elapsed);
 
             // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();
@@ -149,7 +150,7 @@ namespace FlappyBox.States
 
         public void NewGame()
         {
-            Game1.GameState = null;
+            Game1._gameState = null;
             GameState.Score = 0;
             GameState.Coins = 0;
             _game.ChangeState(new GameState(_game, _graphicsDevice, _content));

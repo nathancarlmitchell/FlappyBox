@@ -63,22 +63,6 @@ namespace FlappyBox
             return false;
         }
 
-        public static bool Moved(this TouchCollection touchState)
-        {
-            foreach (TouchLocation location in touchState)
-            {
-                if (location.State == TouchLocationState.Moved)
-                {
-                    if (_debug)
-                    {
-                        Console.WriteLine("Moved:" + location.Position);
-                    }
-                    return true;
-                }
-            }
-            return false;
-        }
-
         public static Vector2 GetPosition(this TouchCollection touchState)
         {
             int x = 0;

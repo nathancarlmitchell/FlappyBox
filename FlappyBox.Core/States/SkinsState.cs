@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -16,23 +17,26 @@ namespace FlappyBox.States
             _previousKeyboard;
         private List<Button> _components;
         private Menu _menu;
-        private AnimatedTexture arrowSprite;
-        private SpriteFont hudFont;
+        private AnimatedTexture _arrowSprite;
 
         public static List<Skin> Skins { get; set; }
 
         public SkinsState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-            : base()
+            : base(game, graphicsDevice, content)
         {
             _game.IsMouseVisible = true;
 
             Background.SetAlpha(0.5f);
 
-            arrowSprite = Art.ArrowSprite;
-            hudFont = Art.HudFont;
+            _arrowSprite = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
+            _arrowSprite.Load(_content, "arrow", 4, 4);
 
-            var backButton = new Button()
+            var buttonTexture = _content.Load<Texture2D>("Controls/Button");
+            var buttonFont = _content.Load<SpriteFont>("HudFont");
+
+            var backButton = new Button(buttonTexture, buttonFont)
             {
+                Position = new Vector2(CenterWidth, 250),
                 Text = "Back",
             };
 
@@ -64,14 +68,14 @@ namespace FlappyBox.States
             Background.Draw(gameTime, spriteBatch);
 
             spriteBatch.DrawString(
-                hudFont,
+                GameState.hudFont,
                 " x " + GameState.Coins,
-                new Vector2(GameState.CoinHUD.X + 16, GameState.CoinHUD.Y - 8),
+                new Vector2(GameState.coinHUD.X + 16, GameState.coinHUD.Y - 8),
                 Color.Black
             );
-            GameState.CoinHUD.coinTexture.DrawFrame(
+            GameState.coinHUD.coinTexture.DrawFrame(
                 spriteBatch,
-                new Vector2(GameState.CoinHUD.X, GameState.CoinHUD.Y)
+                new Vector2(GameState.coinHUD.X, GameState.coinHUD.Y)
             );
 
             for (int i = 0; i < Skins.Count; i++)
@@ -85,7 +89,7 @@ namespace FlappyBox.States
                 {
                     Skins[i].LoadTexture(_content, "locked", 1, 1);
                     spriteBatch.DrawString(
-                        hudFont,
+                        GameState.hudFont,
                         " x " + Skins[i].Cost,
                         new Vector2(_x, _y + 72),
                         Color.Black
@@ -94,7 +98,7 @@ namespace FlappyBox.States
 
                 if (Skins[i].Selected)
                 {
-                    arrowSprite.DrawFrame(spriteBatch, new Vector2(_x, _y - 16 - 64));
+                    _arrowSprite.DrawFrame(spriteBatch, new Vector2(_x, _y - 16 - 64));
                     Skins[i].Position = new Vector2(_x, _y - 16);
                 }
                 else
@@ -238,7 +242,7 @@ namespace FlappyBox.States
 
             Background.Update(gameTime);
 
-            GameState.CoinHUD.coinTexture.UpdateFrame(elapsed);
+            GameState.coinHUD.coinTexture.UpdateFrame(elapsed);
 
             // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();
@@ -254,7 +258,7 @@ namespace FlappyBox.States
                 skin.Update(gameTime, touchState);
             }
 
-            arrowSprite.UpdateFrame(elapsed);
+            _arrowSprite.UpdateFrame(elapsed);
 
             // Check player input.
             _previousKeyboard = _currentKeyboard;

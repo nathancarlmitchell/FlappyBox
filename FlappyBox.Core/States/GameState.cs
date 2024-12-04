@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,13 +12,13 @@ namespace FlappyBox.States
 {
     public class GameState : State
     {
-        private static SpriteFont hudFont,
+        public static SpriteFont hudFont,
             debugFont;
         private Texture2D wallTexture,
             boostTexture;
-        public static Player Player;
+        public static Player player;
         public static List<Skin> Skins { get; set; }
-        public static Coin CoinHUD;
+        public static Coin coinHUD;
         private List<Wall> wallArray;
         private List<Coin> coinArray;
         private WallSpawner wallSpawner;
@@ -28,7 +30,7 @@ namespace FlappyBox.States
         public static int Coins { get; set; }
 
         public GameState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-            : base()
+            : base(game, graphicsDevice, content)
         {
             _game.IsMouseVisible = false;
 
@@ -36,8 +38,8 @@ namespace FlappyBox.States
 
             Background.SetAlpha(1.0);
 
-            hudFont = Art.HudFont;
-            debugFont = Art.DebugFont;
+            hudFont = Game1.HudFont;
+            debugFont = _content.Load<SpriteFont>("DebugFont");
 
             wallTexture = new Texture2D(_graphicsDevice, 1, 1);
             wallTexture.SetData(new[] { Color.White });
@@ -50,15 +52,15 @@ namespace FlappyBox.States
             wallSpawner = new WallSpawner(_content);
             coinSpawner = new CoinSpawner();
 
-            CoinHUD = new Coin(_content);
-            CoinHUD.X = 32;
-            CoinHUD.Y = 32;
+            coinHUD = new Coin(_content);
+            coinHUD.X = 32;
+            coinHUD.Y = 32;
 
-            Player = new Player(_content);
-            Player.X = ScreenWidth / 2;
-            Player.Y = ScreenHeight / 2;
-            Player.Height = 64;
-            Player.Width = 64;
+            player = new Player(_content);
+            player.X = ScreenWidth / 2;
+            player.Y = ScreenHeight / 2;
+            player.Height = 64;
+            player.Width = 64;
 
             // Set the selected player skin
             Util.LoadSkinData(_content);
@@ -69,12 +71,12 @@ namespace FlappyBox.States
                 {
                     if (GameState.Skins[i].Selected)
                     {
-                        Player.ChangeSkin(
+                        player.ChangeSkin(
                             GameState.Skins[i].Name,
                             GameState.Skins[i].Frames,
                             GameState.Skins[i].FPS
                         );
-                        Player.SkinName = GameState.Skins[i].Name;
+                        player.SkinName = GameState.Skins[i].Name;
                     }
                 }
             }
@@ -88,7 +90,7 @@ namespace FlappyBox.States
             Background.Draw(gameTime, spriteBatch);
 
             // Draw player.
-            Player.Draw(spriteBatch);
+            player.Draw(spriteBatch);
 
             spriteBatch.End();
 
@@ -127,10 +129,10 @@ namespace FlappyBox.States
             spriteBatch.DrawString(
                 hudFont,
                 " x " + Coins,
-                new Vector2(CoinHUD.X + 16, CoinHUD.Y - 8),
+                new Vector2(coinHUD.X + 16, coinHUD.Y - 8),
                 Color.Black
             );
-            CoinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(CoinHUD.X, CoinHUD.Y));
+            coinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(coinHUD.X, coinHUD.Y));
 
             // Draw boost button on mobile.
             if (OperatingSystem.IsAndroid())
@@ -200,14 +202,14 @@ namespace FlappyBox.States
             //player.currentTexture.Rotation = (float)(alpha * Math.PI * 2) * 4;
 
             // Update coin positions and check collisions.
-            CoinHUD.coinTexture.UpdateFrame(elapsed);
+            coinHUD.coinTexture.UpdateFrame(elapsed);
             for (int i = 0; i < coinArray.Count; i++)
             {
                 coinArray[i].coinTexture.UpdateFrame(elapsed);
                 coinArray[i].X -= 1;
                 coinArray[i].Hover();
                 // Get coin.
-                if (Player.CheckForCollisions(coinArray[i]))
+                if (player.CheckForCollisions(coinArray[i]))
                 {
                     coinArray.RemoveAt(i);
                     Coins += 1;
@@ -223,7 +225,7 @@ namespace FlappyBox.States
             for (int i = 0; i < wallArray.Count; i++)
             {
                 // Check collisions.
-                if (Player.CheckForCollisions(wallArray[i]))
+                if (player.CheckForCollisions(wallArray[i]))
                 {
                     _game.ChangeState(new GameOverState(_game, _graphicsDevice, _content));
                 }
@@ -254,16 +256,16 @@ namespace FlappyBox.States
             }
 
             // Update player.
-            Player.Update(elapsed, gameTime);
+            player.Update(elapsed, gameTime);
 
             // Check player input.
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                Player.Jump(Player.JumpVelocity);
+                player.Jump(player.JumpVelocity);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
             {
-                Player.Jump(Player.JumpVelocity * 2);
+                player.Jump(player.JumpVelocity * 2);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -285,20 +287,20 @@ namespace FlappyBox.States
 
                 if (x < boostTexture.Width && y > GameState.ScreenHeight - boostTexture.Height)
                 {
-                    Player.Jump(Player.JumpVelocity * 2);
+                    player.Jump(player.JumpVelocity * 2);
                     return;
                 }
-                Player.Jump(Player.JumpVelocity);
+                player.Jump(player.JumpVelocity);
             }
 
             // Check player bounds
-            if (Player.Y > ScreenHeight - Player.Height / 2)
+            if (player.Y > ScreenHeight - player.Height / 2)
             {
-                Player.Y = ScreenHeight - Player.Height / 2;
+                player.Y = ScreenHeight - player.Height / 2;
             }
-            else if (Player.Y < Player.Height / 2)
+            else if (player.Y < player.Height / 2)
             {
-                Player.Y = Player.Height / 2;
+                player.Y = player.Height / 2;
             }
         }
     }

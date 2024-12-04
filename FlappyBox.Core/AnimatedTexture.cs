@@ -32,7 +32,6 @@ namespace FlappyBox
 
         // The origin point of the animated texture.
         public Vector2 Origin;
-        public int Width;
 
         public AnimatedTexture(Vector2 origin, float rotation, float scale, float depth)
         {
@@ -50,12 +49,6 @@ namespace FlappyBox
             Frame = 0;
             Elapsed = 0;
             isPaused = false;
-
-            Width = 0;
-            if (frameCount > 0)
-            {
-                Width = myTexture.Width / frameCount;
-            }
         }
 
         public void UpdateFrame(float elapsed)

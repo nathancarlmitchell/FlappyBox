@@ -7,107 +7,130 @@ namespace FlappyBox
 {
     public class Game1 : Game
     {
-        public GraphicsDeviceManager Graphics;
-        private SpriteBatch spriteBatch;
-        public static State GameState, SkinState, MenuState;
+        public GraphicsDeviceManager graphics;
+        public SpriteBatch spriteBatch;
+        public static State _gameState, _skinState, _menuState;
         private State _currentState, _nextState;
-
-        // Helpful static properties.
-        public static Game1 Instance { get; private set; }
-        public static Viewport Viewport { get { return Instance.GraphicsDevice.Viewport; } }
-        public static Vector2 ScreenSize { get { return new Vector2(Viewport.Width, Viewport.Height); } }
-        public static int ScreenWidth { get { return (int)ScreenSize.X; } }
-        public static int ScreenHeight { get { return (int)ScreenSize.Y; } }
         public static int Scale { get; set; }
-
-        public Game1()
-        {
-            Instance = this;
-            Graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-        }
+        public static SpriteFont HudFont { get; set; }
 
         public void ChangeState(State state)
         {
             _nextState = state;
         }
 
+        public Game1()
+        {
+            graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
+        }
+
+        /// <summary>
+        /// Allows the game to perform any initialization it needs to before starting to run.
+        /// This is where it can query for any required services and load any non-graphic
+        /// related content.  Calling base.Initialize will enumerate through any components
+        /// and initialize them as well.
+        /// </summary>
         protected override void Initialize()
         {
             IsMouseVisible = true;
             Window.Title = "Flappy Box";
-
+            //this.IsFixedTimeStep = true;
+            //this.TargetElapsedTime = TimeSpan.FromSeconds(1 / 120.0);    // Update() is called every 30 times each second / 30 FPS
+            //this.IsFixedTimeStep = false;
             if (OperatingSystem.IsAndroid())
             {
-                Graphics.IsFullScreen = true;
-                Graphics.PreferredBackBufferWidth = 1280 * 4 / 3;
+                graphics.IsFullScreen = true;
+                graphics.PreferredBackBufferWidth = 1280 * 4 / 3;
                 Scale = 2;
             }
             else
             {
-                Graphics.PreferredBackBufferWidth = 1280;
-                Graphics.PreferredBackBufferHeight = 720;
+                graphics.PreferredBackBufferWidth = 1280;
+                graphics.PreferredBackBufferHeight = 720;
                 Scale = 1;
             }
-
-            Graphics.ApplyChanges();
+            //graphics.PreferMultiSampling = true;
+            graphics.ApplyChanges();
             Console.WriteLine("Screen Size: " + GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width + " x " + GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
 
             base.Initialize();
         }
 
+        /// <summary>
+        /// LoadContent will be called once per game and is the place to load
+        /// all of your content.
+        /// </summary>
         protected override void LoadContent()
-        {
-            Art.Load(Content);
-            Background.SetAlpha(0.5);
+        {   if (OperatingSystem.IsAndroid())
+            {
+                HudFont = Content.Load<SpriteFont>("HudMobileFont");
+            }
+            else
+            {
+                HudFont = Content.Load<SpriteFont>("HudFont");
+            }
             Util.CheckOS();
-            Util.LoadGameData();
-            Util.LoadSkinData(Content);
-            Util.LoadTrophyData(Content);
-
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            _currentState = new MenuState(this, Graphics.GraphicsDevice, Content);
+            _currentState = new MenuState(this, graphics.GraphicsDevice, Content);
+            Background.LoadContent(Content);
+            Background.SetAlpha(0.5);
         }
 
+        /// <summary>
+        /// UnloadContent will be called once per game and is the place to unload
+        /// game-specific content.
+        /// </summary>
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
         }
 
+        /// <summary>
+        /// Allows the game to run logic such as updating the world,
+        /// checking for collisions, gathering input, and playing audio.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             if (_nextState != null)
             {
-                if (_nextState is GameState && GameState != null)
+                //Console.WriteLine(_nextState.GetType());
+                //if (_gameState != null)
+                //{
+                //    Console.WriteLine("GameState is not null");
+                //}
+
+                if (_nextState is GameState && _gameState != null)
                 {
-                    _currentState = GameState;
+                    _currentState = _gameState;
                     Console.WriteLine("restoring GameState");
                 }
                 else if (_nextState is GameState)
                 {
-                    GameState = _nextState;
+                    _gameState = _nextState;
                     _currentState = _nextState;
                     Console.WriteLine("_nextState is GameState");
                 }
-                else if (_nextState is SkinsState && SkinState != null)
+                else if (_nextState is SkinsState && _skinState != null)
                 {
-                    _currentState = SkinState;
+                    _currentState = _skinState;
                     Console.WriteLine("restoring SkinSate");
                 }
                 else if (_nextState is SkinsState)
                 {
-                    SkinState = _nextState;
+                    _skinState = _nextState;
                     _currentState = _nextState;
                     Console.WriteLine("_nextState is SkinState");
                 }
-                else if (_nextState is MenuState && MenuState != null)
+                else if (_nextState is MenuState && _menuState != null)
                 {
-                    _currentState = MenuState;
+                    _currentState = _menuState;
                     Console.WriteLine("restoring MenuState");
                 }
                 else if (_nextState is MenuState)
                 {
-                    MenuState = _nextState;
+                    _menuState = _nextState;
                     _currentState = _nextState;
                     Console.WriteLine("_nextState is MenuState");
                 }
@@ -124,6 +147,10 @@ namespace FlappyBox
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// This is called when the game should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);

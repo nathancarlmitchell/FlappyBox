@@ -26,14 +26,14 @@ namespace FlappyBox
         public static void LoadTexture(ContentManager content)
         {
             string textureName = "wall";
-            //if (GameState.Player is not null)
-            //{
-            //    Console.WriteLine(GameState.Player.SkinName);
-            //    if (GameState.Player.SkinName == "anim_idle_companion")
-            //    {
-            //        textureName = "ball";
-            //    }
-            //}
+            if (GameState.player is not null)
+            {
+                Console.WriteLine(GameState.player.SkinName);
+                if (GameState.player.SkinName == "anim_idle_companion")
+                {
+                    textureName = "ball";
+                }
+            }
 
             // Load the texture to tile.
             //Console.WriteLine("Defualt Wall texture loaded.");
