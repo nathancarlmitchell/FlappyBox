@@ -14,8 +14,8 @@ namespace FlappyBox.States
     {
         private KeyboardState _currentKeyboard,
             _previousKeyboard;
-        private List<Button> _components;
-        private Menu _menu;
+        private List<Button> buttons;
+        private Menu menu;
         private AnimatedTexture arrowSprite;
         private SpriteFont hudFont;
 
@@ -38,9 +38,9 @@ namespace FlappyBox.States
 
             backButton.Click += BackButton_Click;
 
-            _components = new List<Button>() { backButton };
+            buttons = new List<Button>() { backButton };
 
-            _menu = new Menu(_components);
+            menu = new Menu(buttons);
 
             Util.LoadSkinData(content);
 
@@ -105,7 +105,7 @@ namespace FlappyBox.States
                 Skins[i].Draw(spriteBatch);
             }
 
-            _menu.Draw(gameTime, spriteBatch);
+            menu.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
         }
@@ -243,9 +243,9 @@ namespace FlappyBox.States
             // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();
 
-            foreach (var component in _components)
+            foreach (var button in buttons)
             {
-                component.Update(gameTime, touchCollection);
+                button.Update(gameTime, touchCollection);
             }
 
             TouchCollection touchState = TouchPanel.GetState();

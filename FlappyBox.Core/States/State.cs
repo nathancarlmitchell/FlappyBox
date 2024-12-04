@@ -58,12 +58,6 @@ namespace FlappyBox.States
             get { return _centerWidth; }
         }
 
-        public static int ControlWidthCenter
-        {
-            get { return _controlWidthCenter; }
-            set { _controlWidthCenter = value; }
-        }
-
         public abstract void Update(GameTime gameTime);
 
         #endregion

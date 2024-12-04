@@ -8,10 +8,11 @@ namespace FlappyBox
 {
     public class Game1 : Game
     {
-        public GraphicsDeviceManager Graphics;
+        private GraphicsDeviceManager Graphics;
         private SpriteBatch spriteBatch;
-        public static State GameState, SkinState, MenuState;
         private State _currentState, _nextState;
+
+        public static State GameState, SkinState, MenuState;
 
         // Helpful static properties.
         public static Game1 Instance { get; private set; }
@@ -20,7 +21,7 @@ namespace FlappyBox
         public static int ScreenWidth { get { return (int)ScreenSize.X; } }
         public static int ScreenHeight { get { return (int)ScreenSize.Y; } }
         public static int Scale { get; set; }
-        public static int MobileWidth = 1280 * 4 / 3;
+        public static int Width { get; set; }
 
         public Game1()
         {
@@ -42,11 +43,13 @@ namespace FlappyBox
             if (OperatingSystem.IsAndroid())
             {
                 Graphics.IsFullScreen = true;
-                Graphics.PreferredBackBufferWidth = MobileWidth;
+                Width = 1280 * 4 / 3;
+                Graphics.PreferredBackBufferWidth = Width;
                 Scale = 2;
             }
             else
             {
+                Width = 1280;
                 Graphics.PreferredBackBufferWidth = 1280;
                 Graphics.PreferredBackBufferHeight = 720;
                 Scale = 1;

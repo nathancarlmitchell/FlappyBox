@@ -20,7 +20,7 @@ namespace FlappyBox.Controls
         {
             _buttons = components;
             _centerHeight = ((int)Game1.ScreenSize.Y / 2) + (components.Count * 20);
-            _centerWidth = (Game1.MobileWidth / 2) - ((Art.ButtonTexture.Width * Game1.Scale) / 2);
+            _centerWidth = (Game1.Width / 2) - ((Art.ButtonTexture.Width * Game1.Scale) / 2);
             _scale = Game1.Scale;
 
             for (int i = 0; i < _buttons.Count; i++)

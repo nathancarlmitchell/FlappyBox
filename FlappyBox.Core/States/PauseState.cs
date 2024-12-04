@@ -14,8 +14,8 @@ namespace FlappyBox.States
 {
     public class PauseState : State
     {
-        private List<Button> _components;
-        private Menu _menu;
+        private List<Button> buttons;
+        private Menu menu;
         public PauseState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
         : base()
         {
@@ -44,14 +44,14 @@ namespace FlappyBox.States
 
             quitGameButton.Click += QuitGameButton_Click;
 
-            _components = new List<Button>()
+            buttons = new List<Button>()
             {
                 continueGameButton,
                 mainMenuButton,
                 quitGameButton,
             };
 
-            _menu = new Menu(_components);
+            menu = new Menu(buttons);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -81,7 +81,7 @@ namespace FlappyBox.States
 
             GameState.Player.Draw(spriteBatch);
 
-            _menu.Draw(gameTime, spriteBatch);
+            menu.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
         }
@@ -119,9 +119,9 @@ namespace FlappyBox.States
             // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();
 
-            foreach (var component in _components)
+            foreach (var button in buttons)
             {
-                component.Update(gameTime, touchCollection);
+                button.Update(gameTime, touchCollection);
             }
 
             // Check player input.

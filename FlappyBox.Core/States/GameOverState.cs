@@ -11,8 +11,8 @@ namespace FlappyBox.States
 {
     public class GameOverState : State
     {
-        private List<Button> _components;
-        private Menu _menu;
+        private List<Button> butttons;
+        private Menu menu;
         private SpriteFont titleFont,
             hudFont;
 
@@ -52,9 +52,9 @@ namespace FlappyBox.States
 
             quitGameButton.Click += QuitGameButton_Click;
 
-            _components = new List<Button>() { newGameButton, mainMenuButton, quitGameButton };
+            butttons = new List<Button>() { newGameButton, mainMenuButton, quitGameButton };
 
-            _menu = new Menu(_components);
+            menu = new Menu(butttons);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -99,7 +99,7 @@ namespace FlappyBox.States
                 Color.AliceBlue
             );
 
-            _menu.Draw(gameTime, spriteBatch);
+            menu.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
         }
@@ -137,9 +137,9 @@ namespace FlappyBox.States
 
             // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();
-            foreach (var component in _components)
+            foreach (var button in butttons)
             {
-                component.Update(gameTime, touchCollection);
+                button.Update(gameTime, touchCollection);
             }
 
             // Check player input.
