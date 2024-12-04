@@ -103,12 +103,6 @@ namespace FlappyBox.States
 
             spriteBatch.Begin();
 
-            // Draw boost button on mobile.
-            if (OperatingSystem.IsAndroid())
-            {
-                spriteBatch.Draw(boostTexture, new Vector2(0, ScreenHeight - 128), Color.White);
-            }
-
             // Draw coins.
             for (int i = 0; i < coinArray.Count; i++)
             {
@@ -140,8 +134,13 @@ namespace FlappyBox.States
             {
                 spriteBatch.Draw(
                     boostTexture,
-                    new Vector2(0, ScreenHeight - boostTexture.Height),
-                    Color.White
+                    new Vector2(0, ScreenHeight - (boostTexture.Height * 2)),
+                    Color.White * 0.5f
+                );
+                spriteBatch.Draw(
+                    boostTexture,
+                    new Vector2(0, ScreenHeight - (boostTexture.Height )),
+                    Color.White * 0.5f
                 );
             }
 
@@ -286,7 +285,7 @@ namespace FlappyBox.States
                 int x = (int)touchState.GetPosition().X;
                 int y = (int)touchState.GetPosition().Y;
 
-                if (x < boostTexture.Width && y > GameState.ScreenHeight - boostTexture.Height)
+                if (x < boostTexture.Width && y > GameState.ScreenHeight - (boostTexture.Height * 2))
                 {
                     Player.Jump(Player.JumpVelocity * 2);
                     return;
