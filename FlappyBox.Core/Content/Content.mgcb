@@ -365,6 +365,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/TitleFont.spritefont
 
+#begin Fonts/TitleMobileFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/TitleMobileFont.spritefont
+
 #begin locked.png
 /importer:TextureImporter
 /processor:TextureProcessor
