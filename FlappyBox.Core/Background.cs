@@ -13,7 +13,6 @@ namespace FlappyBox
         private static Object cloud;
         private static double alpha,
             targetAlpha;
-        private static readonly Random rand = new();
 
         static Background()
         {
@@ -25,7 +24,7 @@ namespace FlappyBox
             cloud = new Object { X = 250, Y = 200 };
 
             bird = new Bird();
-            Reset(bird);
+            bird.Reset();
         }
 
         public static void SetAlpha(double _alpha)
@@ -71,7 +70,7 @@ namespace FlappyBox
             );
 
             // Draw bird.
-            bird.currentTexture.DrawFrame(spriteBatch, new Vector2(bird.X, bird.Y), (float)0.75);
+            bird.Draw(spriteBatch);
         }
 
         public static void PostUpdate(GameTime gameTime)
@@ -98,23 +97,7 @@ namespace FlappyBox
             }
 
             // Update bird animation.
-            if (bird.X < 0)
-            {
-                Reset(bird);
-            }
-            bird.currentTexture.UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
-            bird.X -= 1;
-        }
-
-        public static void Reset(Object obj)
-        {
-            int minHeight = 128;
-            int maxHeight = Game1.ScreenHeight - 128;
-            int height = (int)
-                Math.Floor(rand.NextDouble() * (maxHeight - minHeight + 1) + minHeight);
-
-            obj.X = Game1.ScreenWidth + 128;
-            obj.Y = height;
+            bird.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
         }
     }
 }

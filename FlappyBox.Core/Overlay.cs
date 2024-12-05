@@ -12,7 +12,7 @@ namespace FlappyBox
         public static void DrawTitle()
         {
             // Draw title.
-            Game1.Instance.SpriteBatch.DrawString(
+            spriteBatch.DrawString(
                 Art.TitleFont,
                 "Flappy Box",
                 new Vector2(
