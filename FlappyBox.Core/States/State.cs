@@ -14,7 +14,7 @@ namespace FlappyBox.States
         private static int _centerWidth;
         private static int _screenHeight;
         private static int _screenWidth;
-        private static int _controlWidthCenter;
+        //private static int _controlWidthCenter;
 
         #endregion
 
@@ -35,7 +35,7 @@ namespace FlappyBox.States
             _screenWidth = Game1.ScreenWidth;
             _screenHeight = Game1.ScreenHeight;
 
-            _controlWidthCenter = (Game1.ScreenWidth / 2) - ((Art.ButtonTexture.Width / 2) * Game1.Scale);
+            //_controlWidthCenter = (Game1.ScreenWidth / 2) - ((Art.ButtonTexture.Width / 2) * Game1.Scale);
         }
 
         public static int ScreenHeight

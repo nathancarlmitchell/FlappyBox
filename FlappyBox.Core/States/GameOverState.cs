@@ -13,8 +13,7 @@ namespace FlappyBox.States
     {
         private List<Button> butttons;
         private Menu menu;
-        private SpriteFont titleFont,
-            hudFont;
+        private SpriteFont titleFont;
 
         public GameOverState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
             : base()
@@ -29,7 +28,6 @@ namespace FlappyBox.States
             Background.SetAlpha(0.33f);
 
             titleFont = Art.TitleFont;
-            hudFont = Art.HudFont;
 
             var newGameButton = new Button()
             {
@@ -64,33 +62,7 @@ namespace FlappyBox.States
             Background.Draw(gameTime, spriteBatch);
 
             // Draw HUD.
-            var color = Color.Black;
-            if (GameState.Score >= GameState.HighScore)
-            {
-                color = Color.Yellow;
-            }
-            spriteBatch.DrawString(
-                hudFont,
-                "Score: " + GameState.Score,
-                new Vector2(32, 64),
-                color
-            );
-            spriteBatch.DrawString(
-                hudFont,
-                "Hi Score: " + GameState.HighScore,
-                new Vector2(32, 92),
-                color
-            );
-            spriteBatch.DrawString(
-                hudFont,
-                " x " + GameState.Coins,
-                new Vector2(GameState.CoinHUD.X + 16, GameState.CoinHUD.Y - 8),
-                Color.Black
-            );
-            GameState.CoinHUD.coinTexture.DrawFrame(
-                spriteBatch,
-                new Vector2(GameState.CoinHUD.X, GameState.CoinHUD.Y)
-            );
+            Overlay.DrawHUD();
 
             spriteBatch.DrawString(
                 titleFont,
@@ -133,7 +105,7 @@ namespace FlappyBox.States
 
             Background.Update(gameTime);
 
-            GameState.CoinHUD.coinTexture.UpdateFrame(elapsed);
+            GameState.CoinHUD.CoinTexture.UpdateFrame(elapsed);
 
             // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();

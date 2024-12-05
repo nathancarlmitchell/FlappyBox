@@ -1,16 +1,10 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using FlappyBox.States;
 
 namespace FlappyBox
 {
     public class Wall : Object
     {
-        protected ContentManager _content;
-
         // Tiling Texture
         private static Texture2D wallTexture;
 
@@ -23,7 +17,7 @@ namespace FlappyBox
         // Rectangle to draw tiles in
         private Rectangle targetRectangle;
 
-        public static void LoadTexture(ContentManager content)
+        public static void LoadTexture()
         {
             string textureName = "wall";
             //if (GameState.Player is not null)
@@ -37,7 +31,7 @@ namespace FlappyBox
 
             // Load the texture to tile.
             //Console.WriteLine("Defualt Wall texture loaded.");
-            wallTexture = content.Load<Texture2D>(textureName);
+            wallTexture = Game1.Instance.Content.Load<Texture2D>(textureName);
         }
 
         public void Move()

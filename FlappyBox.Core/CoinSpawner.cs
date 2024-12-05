@@ -1,29 +1,25 @@
 using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using FlappyBox.States;
 
 namespace FlappyBox
 {
     public class CoinSpawner
     {
-        private static Random rand = new Random();
+        private static readonly Random rand = new();
         private Coin coin;
 
-        public Coin Spawn(ContentManager content)
+        public Coin Spawn()
         {
-            coin = new Coin(content);
+            coin = new Coin();
 
             int heightBuffer = 64;
             int minHeight = heightBuffer + coin.Height;
-            int maxHeight = GameState.ScreenHeight - (heightBuffer + coin.Height);
+            int maxHeight = Game1.ScreenHeight - (heightBuffer + coin.Height);
 
             int height = (int)
                 Math.Floor(rand.NextDouble() * (maxHeight - minHeight + 1) + minHeight);
 
-            coin.X = GameState.ScreenWidth;
+            coin.X = Game1.ScreenWidth;
             coin.Y = height;
 
             return coin;

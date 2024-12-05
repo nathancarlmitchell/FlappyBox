@@ -10,7 +10,7 @@ namespace FlappyBox
 {
     public class Player : Object
     {
-        protected ContentManager _content;
+        protected ContentManager content;
         private AnimatedTexture playerIdleTexture,
             playerJumpTexture,
             wingLeft,
@@ -21,17 +21,17 @@ namespace FlappyBox
         private const float scale = 1f;
         private const float depth = 0.5f;
 
-        public int Frames;
-        public int FPS;
-
         private const int maxVelocity = 64;
+
         public int JumpVelocity { get; } = 14;
         public int Velocity { get; set; } = 14;
         public string SkinName { get; set; }
+        public int Frames { get; set; }
+        public int FPS { get; set; }
 
-        public Player(ContentManager content)
+        public Player()
         {
-            _content = content;
+            content = Game1.Instance.Content;
 
             this.Height = 64;
             this.Width = 64;
@@ -44,7 +44,7 @@ namespace FlappyBox
                 scale,
                 depth
             );
-            playerIdleTexture.Load(_content, "anim_idle_default", this.Frames, this.FPS);
+            playerIdleTexture.Load(content, "anim_idle_default", this.Frames, this.FPS);
 
             playerJumpTexture = new AnimatedTexture(
                 new Vector2(this.Height / 2, this.Width / 2),
@@ -52,7 +52,7 @@ namespace FlappyBox
                 scale,
                 depth
             );
-            playerJumpTexture.Load(_content, "anim_jump_default", this.Frames, this.FPS);
+            playerJumpTexture.Load(content, "anim_jump_default", this.Frames, this.FPS);
 
             wingLeft = new AnimatedTexture(
                 new Vector2(wingSize / 2, wingSize / 2),
@@ -60,7 +60,7 @@ namespace FlappyBox
                 scale,
                 depth
             );
-            wingLeft.Load(_content, "wing_left", 1, 0);
+            wingLeft.Load(content, "wing_left", 1, 0);
 
             wingRight = new AnimatedTexture(
                 new Vector2(wingSize / 2, wingSize / 2),
@@ -68,7 +68,7 @@ namespace FlappyBox
                 scale,
                 depth
             );
-            wingRight.Load(_content, "wing_right", 1, 0);
+            wingRight.Load(content, "wing_right", 1, 0);
 
             currentTexture = playerIdleTexture;
         }
@@ -111,8 +111,8 @@ namespace FlappyBox
             this.FPS = fps;
 
             string _name = skin.Split("_").Last();
-            playerIdleTexture.Load(_content, "anim_idle_" + _name, frames, fps);
-            playerJumpTexture.Load(_content, "anim_jump_" + _name, frames, fps);
+            playerIdleTexture.Load(content, "anim_idle_" + _name, frames, fps);
+            playerJumpTexture.Load(content, "anim_jump_" + _name, frames, fps);
 
             currentTexture = playerIdleTexture;
         }
@@ -182,15 +182,15 @@ namespace FlappyBox
             this.UpdateTexture();
         }
 
-        public void Draw(SpriteBatch _spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             // Draw player texture.
-            this.currentTexture.DrawFrame(_spriteBatch, new Vector2(this.X, this.Y));
+            this.currentTexture.DrawFrame(spriteBatch, new Vector2(this.X, this.Y));
 
             // Draw wings.
-            this.wingLeft.DrawFrame(_spriteBatch, new Vector2(this.X - 32 - 4, this.Y + 16));
+            this.wingLeft.DrawFrame(spriteBatch, new Vector2(this.X - 32 - 4, this.Y + 16));
             this.wingRight.DrawFrame(
-                _spriteBatch,
+                spriteBatch,
                 new Vector2(this.X + this.Width - 32 + 4, this.Y + 16)
             );
         }

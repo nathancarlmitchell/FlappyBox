@@ -1,16 +1,13 @@
 using System;
-using System.Collections.Generic;
+using FlappyBox.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using FlappyBox.States;
 
 namespace FlappyBox
 {
     public class Coin : Object
     {
-        protected ContentManager _content;
-        public AnimatedTexture coinTexture;
+        public AnimatedTexture CoinTexture;
 
         private const float rotation = 0;
         private const float scale = 1f;
@@ -22,22 +19,29 @@ namespace FlappyBox
         private int hover = 0;
         private bool direction = true;
 
-        public Coin(ContentManager content)
+        public Coin()
         {
-            _content = content;
+            ContentManager content = Game1.Instance.Content;
 
             this.Height = 32;
             this.Width = 32;
             this.X = GameState.ScreenWidth;
             this.Y = GameState.CenterHeight;
 
-            coinTexture = new AnimatedTexture(
+            CoinTexture = new AnimatedTexture(
                 new Vector2(this.Height / 2, this.Width / 2),
                 rotation,
                 scale,
                 depth
             );
-            coinTexture.Load(_content, "coin", frames, framesPerSec);
+
+            CoinTexture.Load(content, "coin", frames, framesPerSec);
+        }
+
+        public void Move()
+        {
+            this.X--;
+            this.Hover();
         }
 
         public void Hover()

@@ -63,16 +63,7 @@ namespace FlappyBox.States
 
             Background.Draw(gameTime, spriteBatch);
 
-            spriteBatch.DrawString(
-                hudFont,
-                " x " + GameState.Coins,
-                new Vector2(GameState.CoinHUD.X + 16, GameState.CoinHUD.Y - 8),
-                Color.Black
-            );
-            GameState.CoinHUD.coinTexture.DrawFrame(
-                spriteBatch,
-                new Vector2(GameState.CoinHUD.X, GameState.CoinHUD.Y)
-            );
+            Overlay.DrawHUD(false);
 
             for (int i = 0; i < Skins.Count; i++)
             {
@@ -238,7 +229,7 @@ namespace FlappyBox.States
 
             Background.Update(gameTime);
 
-            GameState.CoinHUD.coinTexture.UpdateFrame(elapsed);
+            GameState.CoinHUD.CoinTexture.UpdateFrame(elapsed);
 
             // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();

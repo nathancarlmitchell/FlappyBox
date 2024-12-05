@@ -61,20 +61,7 @@ namespace FlappyBox.States
             Background.Draw(gameTime, spriteBatch);
 
             // Draw HUD.
-            var color = Color.Black;
-            if (GameState.Score >= GameState.HighScore)
-            {
-                color = Color.Yellow;
-            }
-            spriteBatch.DrawString(Art.HudFont, "Score: " + GameState.Score, new Vector2(32, 64), color);
-            spriteBatch.DrawString(Art.HudFont, "Hi Score: " + GameState.HighScore, new Vector2(32, 92), color);
-            spriteBatch.DrawString(
-                Art.HudFont,
-                " x " + GameState.Coins,
-                new Vector2(GameState.CoinHUD.X + 16, GameState.CoinHUD.Y - 8),
-                Color.Black
-            );
-            GameState.CoinHUD.coinTexture.DrawFrame(spriteBatch, new Vector2(GameState.CoinHUD.X, GameState.CoinHUD.Y));
+            Overlay.DrawHUD();
 
             spriteBatch.DrawString(Art.TitleFont, "Paused", new Vector2(Game1.ScreenWidth / 2 - (Art.TitleFont.MeasureString("Paused").X / 2), CenterHeight / 2),
                 Color.White, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);

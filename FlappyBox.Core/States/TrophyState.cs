@@ -123,7 +123,7 @@ namespace FlappyBox.States
             {
                 int _centerComponent = Trophys.Count / 2;
                 int _difference = i - _centerComponent;
-                int _x = MenuState.CenterWidth + _difference * 175 - (64 / Trophys.Count);
+                int _x = MenuState.CenterWidth + _difference * 175 - ((64 * Game1.Scale) / Trophys.Count);
                 int _y = MenuState.CenterHeight - 128 - 16;
 
                 string name = "???";

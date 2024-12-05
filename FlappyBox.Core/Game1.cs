@@ -1,25 +1,40 @@
 ﻿using System;
+using System.Diagnostics;
+using FlappyBox.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using FlappyBox.States;
-using System.Diagnostics;
 
 namespace FlappyBox
 {
     public class Game1 : Game
     {
         private GraphicsDeviceManager Graphics;
-        private SpriteBatch spriteBatch;
-        private State _currentState, _nextState;
+        public SpriteBatch SpriteBatch;
+        private State currentState,
+            nextState;
 
-        public static State GameState, SkinState, MenuState;
+        public static State GameState,
+            SkinState,
+            MenuState;
 
         // Helpful static properties.
         public static Game1 Instance { get; private set; }
-        public static Viewport Viewport { get { return Instance.GraphicsDevice.Viewport; } }
-        public static Vector2 ScreenSize { get { return new Vector2(Viewport.Width, Viewport.Height); } }
-        public static int ScreenWidth { get { return (int)ScreenSize.X; } }
-        public static int ScreenHeight { get { return (int)ScreenSize.Y; } }
+        public static Viewport Viewport
+        {
+            get { return Instance.GraphicsDevice.Viewport; }
+        }
+        public static Vector2 ScreenSize
+        {
+            get { return new Vector2(Viewport.Width, Viewport.Height); }
+        }
+        public static int ScreenWidth
+        {
+            get { return (int)ScreenSize.X; }
+        }
+        public static int ScreenHeight
+        {
+            get { return (int)ScreenSize.Y; }
+        }
         public static int Scale { get; set; }
         public static int Width { get; set; }
 
@@ -32,7 +47,7 @@ namespace FlappyBox
 
         public void ChangeState(State state)
         {
-            _nextState = state;
+            nextState = state;
         }
 
         protected override void Initialize()
@@ -56,7 +71,12 @@ namespace FlappyBox
             }
 
             Graphics.ApplyChanges();
-            Debug.WriteLine("Screen Size: " + GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width + " x " + GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+            Debug.WriteLine(
+                "Screen Size: "
+                    + GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width
+                    + " x "
+                    + GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height
+            );
 
             base.Initialize();
         }
@@ -70,13 +90,13 @@ namespace FlappyBox
             Util.LoadSkinData(Content);
             Util.LoadTrophyData(Content);
 
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
             run();
         }
 
         protected void run()
         {
-            _currentState = new MenuState(this, Graphics.GraphicsDevice, Content);
+            currentState = new MenuState(this, Graphics.GraphicsDevice, Content);
         }
 
         protected override void UnloadContent()
@@ -86,58 +106,58 @@ namespace FlappyBox
 
         protected override void Update(GameTime gameTime)
         {
-            if (_nextState != null)
+            if (nextState != null)
             {
-                if (_nextState is GameState && GameState != null)
+                if (nextState is GameState && GameState != null)
                 {
-                    _currentState = GameState;
+                    currentState = GameState;
                     Console.WriteLine("restoring GameState");
                 }
-                else if (_nextState is GameState)
+                else if (nextState is GameState)
                 {
-                    GameState = _nextState;
-                    _currentState = _nextState;
-                    Console.WriteLine("_nextState is GameState");
+                    GameState = nextState;
+                    currentState = nextState;
+                    Console.WriteLine("nextState is GameState");
                 }
-                else if (_nextState is SkinsState && SkinState != null)
+                else if (nextState is SkinsState && SkinState != null)
                 {
-                    _currentState = SkinState;
+                    currentState = SkinState;
                     Console.WriteLine("restoring SkinSate");
                 }
-                else if (_nextState is SkinsState)
+                else if (nextState is SkinsState)
                 {
-                    SkinState = _nextState;
-                    _currentState = _nextState;
-                    Console.WriteLine("_nextState is SkinState");
+                    SkinState = nextState;
+                    currentState = nextState;
+                    Console.WriteLine("nextState is SkinState");
                 }
-                else if (_nextState is MenuState && MenuState != null)
+                else if (nextState is MenuState && MenuState != null)
                 {
-                    _currentState = MenuState;
+                    currentState = MenuState;
                     Console.WriteLine("restoring MenuState");
                 }
-                else if (_nextState is MenuState)
+                else if (nextState is MenuState)
                 {
-                    MenuState = _nextState;
-                    _currentState = _nextState;
-                    Console.WriteLine("_nextState is MenuState");
+                    MenuState = nextState;
+                    currentState = nextState;
+                    Console.WriteLine("nextState is MenuState");
                 }
                 else
                 {
-                    _currentState = _nextState;
+                    currentState = nextState;
                 }
 
-                _nextState = null;
+                nextState = null;
             }
 
-            _currentState.Update(gameTime);
-            _currentState.PostUpdate(gameTime);
+            currentState.Update(gameTime);
+            currentState.PostUpdate(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            _currentState.Draw(gameTime, spriteBatch);
+            currentState.Draw(gameTime, SpriteBatch);
             base.Draw(gameTime);
         }
     }

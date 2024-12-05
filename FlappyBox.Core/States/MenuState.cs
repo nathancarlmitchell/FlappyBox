@@ -69,12 +69,7 @@ namespace FlappyBox.States
             menu.Draw(gameTime, spriteBatch);
 
             // Draw title.
-            spriteBatch.DrawString(
-                titleFont,
-                "Flappy Box",
-                new Vector2((titleFont.MeasureString("Flappy Box").X / 2), 128),
-                Color.AliceBlue
-            );
+            Overlay.DrawTitle();
 
             spriteBatch.End();
         }
