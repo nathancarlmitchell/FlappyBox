@@ -9,12 +9,12 @@ namespace FlappyBox.Controls
     public class Button
     {
         #region Fields
-        private MouseState _currentMouse,
-            _previousMouse;
-        private SpriteFont _font;
-        private bool _isHovering;
-        private Texture2D _texture;
-        private int _scale;
+        private MouseState mouse,
+            previousMouse;
+        private SpriteFont font;
+        private bool isHovering;
+        private Texture2D texture;
+        private int scale;
 
         #endregion
 
@@ -30,8 +30,8 @@ namespace FlappyBox.Controls
                 return new Rectangle(
                     (int)Position.X,
                     (int)Position.Y,
-                    _texture.Width * _scale,
-                    _texture.Height * _scale
+                    texture.Width * scale,
+                    texture.Height * scale
                 );
             }
         }
@@ -44,25 +44,25 @@ namespace FlappyBox.Controls
 
         public Button()
         {
-            _texture = Art.ButtonTexture;
-            _font = Art.HudFont;
-            _scale = Game1.Scale;
+            texture = Art.ButtonTexture;
+            font = Art.HudFont;
+            scale = Game1.Scale;
             PenColor = Color.Black;
         }
 
-        public Button(Texture2D texture)
+        public Button(Texture2D _texture)
         {
-            _texture = texture;
-            _font = Art.HudFont;
-            _scale = Game1.Scale;
+            texture = _texture;
+            font = Art.HudFont;
+            scale = Game1.Scale;
             PenColor = Color.Black;
         }
 
-        public Button(Texture2D texture, SpriteFont font)
+        public Button(Texture2D _texture, SpriteFont _font)
         {
-            _texture = texture;
-            _font = font;
-            _scale = Game1.Scale;
+            texture = _texture;
+            font = _font;
+            scale = Game1.Scale;
             PenColor = Color.Black;
         }
 
@@ -70,38 +70,38 @@ namespace FlappyBox.Controls
         {
             var color = Color.White;
 
-            if (_isHovering)
+            if (isHovering)
             {
                 color = Color.Gray;
             }
 
-            spriteBatch.Draw(_texture, Rectangle, color);
+            spriteBatch.Draw(texture, Rectangle, color);
 
             if (!string.IsNullOrEmpty(Text))
             {
-                var x = (Rectangle.X + (Rectangle.Width / 2)) - (_font.MeasureString(Text).X / 2);
-                var y = (Rectangle.Y + (Rectangle.Height / 2)) - (_font.MeasureString(Text).Y / 2);
+                var x = (Rectangle.X + (Rectangle.Width / 2)) - (font.MeasureString(Text).X / 2);
+                var y = (Rectangle.Y + (Rectangle.Height / 2)) - (font.MeasureString(Text).Y / 2);
 
-                spriteBatch.DrawString(_font, Text, new Vector2(x, y), PenColor);
+                spriteBatch.DrawString(font, Text, new Vector2(x, y), PenColor);
             }
         }
 
         public void Update(GameTime gameTime, TouchCollection touchCollection)
         {
-            _previousMouse = _currentMouse;
-            _currentMouse = Mouse.GetState();
+            previousMouse = mouse;
+            mouse = Mouse.GetState();
 
-            var mouseRectangle = new Rectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
+            var mouseRectangle = new Rectangle(mouse.X, mouse.Y, 1, 1);
 
-            _isHovering = false;
+            isHovering = false;
 
             if (mouseRectangle.Intersects(Rectangle))
             {
-                _isHovering = true;
+                isHovering = true;
 
                 if (
-                    _currentMouse.LeftButton == ButtonState.Released
-                    && _previousMouse.LeftButton == ButtonState.Pressed
+                    mouse.LeftButton == ButtonState.Released
+                    && previousMouse.LeftButton == ButtonState.Pressed
                 )
                 {
                     Click?.Invoke(this, new EventArgs());
@@ -118,7 +118,7 @@ namespace FlappyBox.Controls
                     var touchRectangle = new Rectangle(x, y, 1, 1);
                     if (touchRectangle.Intersects(Rectangle))
                     {
-                        _isHovering = true;
+                        isHovering = true;
                     }
                 }
             }

@@ -14,6 +14,7 @@ namespace FlappyBox
             // Draw title.
             SpriteFont font = Art.TitleFont;
             string text = "Flappy Box";
+
             int x = (int)((Game1.Width / 2) - (font.MeasureString(text).X / 2));
             int y = 128 / Game1.Scale;
 

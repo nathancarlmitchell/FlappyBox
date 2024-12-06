@@ -8,14 +8,14 @@ namespace FlappyBox.Controls
     {
         private List<Button> buttons;
 
-        public Menu(List<Button> _components)
+        public Menu(List<Button> _buttons)
         {
-            buttons = _components;
+            buttons = _buttons;
             int scale = Game1.Scale;
 
             int centerHeight = (Game1.ScreenHeight / 2) + (buttons.Count * 20);
             int centerWidth = (Game1.Width / 2) - ((Art.ButtonTexture.Width * scale) / 2);
-            
+
             for (int i = 0; i < buttons.Count; i++)
             {
                 int totalComponents = buttons.Count;
@@ -30,10 +30,7 @@ namespace FlappyBox.Controls
                     buttonHeight = Game1.ScreenHeight - 64 * 4;
                 }
 
-                buttons[i].Position = new Vector2(
-                    centerWidth,
-                    buttonHeight
-                );
+                buttons[i].Position = new Vector2(centerWidth, buttonHeight);
             }
         }
 
