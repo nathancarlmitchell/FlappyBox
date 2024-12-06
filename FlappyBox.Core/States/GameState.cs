@@ -15,6 +15,7 @@ namespace FlappyBox.States
         private WallSpawner wallSpawner;
         private CoinSpawner coinSpawner;
         private bool _debug = false;
+        private static readonly Random rand = new();
 
         public static Player Player { get; set; }
         public static List<Skin> Skins { get; set; }
@@ -172,6 +173,13 @@ namespace FlappyBox.States
                     coinArray.RemoveAt(i);
                     Coins++;
                     TotalCoins++;
+
+                    // Play coin sound
+                    if (!Game1.Mute)
+                    {
+                        float pitch = (float)(rand.NextDouble() * (0.2 - -0.2) + -0.2);
+                        Art.CoinSound.Play(0.25f, pitch, 0.0f);
+                    }
                 }
 
                 // Despawn offscreen coins.

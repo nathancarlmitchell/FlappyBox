@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FlappyBox.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-using FlappyBox.Controls;
 
 namespace FlappyBox.States
 {
     public class SkinsState : State
     {
-        private KeyboardState _currentKeyboard,
-            _previousKeyboard;
+        private KeyboardState currentKeyboard,
+            previousKeyboard;
         private List<Button> buttons;
         private Menu menu;
         private AnimatedTexture arrowSprite;
@@ -31,10 +31,7 @@ namespace FlappyBox.States
             arrowSprite = Art.ArrowSprite;
             hudFont = Art.HudFont;
 
-            var backButton = new Button()
-            {
-                Text = "Back",
-            };
+            var backButton = new Button() { Text = "Back" };
 
             backButton.Click += BackButton_Click;
 
@@ -248,22 +245,22 @@ namespace FlappyBox.States
             arrowSprite.UpdateFrame(elapsed);
 
             // Check player input.
-            _previousKeyboard = _currentKeyboard;
-            _currentKeyboard = Keyboard.GetState();
+            previousKeyboard = currentKeyboard;
+            currentKeyboard = Keyboard.GetState();
             // Left.
-            if (_currentKeyboard.IsKeyDown(Keys.Left) && !_previousKeyboard.IsKeyDown(Keys.Left))
+            if (currentKeyboard.IsKeyDown(Keys.Left) && !previousKeyboard.IsKeyDown(Keys.Left))
             {
                 this.LeftArrowKey(-1);
                 Util.SaveSkinData();
             }
             // Right.
-            if (_currentKeyboard.IsKeyDown(Keys.Right) && !_previousKeyboard.IsKeyDown(Keys.Right))
+            if (currentKeyboard.IsKeyDown(Keys.Right) && !previousKeyboard.IsKeyDown(Keys.Right))
             {
                 this.RightArrowKey();
                 Util.SaveSkinData();
             }
             // Enter.
-            if (_currentKeyboard.IsKeyDown(Keys.Enter) && !_previousKeyboard.IsKeyUp(Keys.Enter))
+            if (currentKeyboard.IsKeyDown(Keys.Enter) && !previousKeyboard.IsKeyUp(Keys.Enter))
             {
                 MainMenu();
             }

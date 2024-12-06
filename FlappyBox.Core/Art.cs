@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection.Metadata;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -10,6 +13,8 @@ namespace FlappyBox
         public static Texture2D ButtonTexture { get; private set; }
         public static Texture2D BoostTexture { get; private set; }
         public static Texture2D BackgroundTexture { get; private set; }
+        public static Texture2D MuteTexture { get; private set; }
+        public static Texture2D UnmuteTexture { get; private set; }
 
         //public static Texture2D WallTexture { get; private set; }
         public static Texture2D CloudTexture { get; private set; }
@@ -18,12 +23,18 @@ namespace FlappyBox
         public static SpriteFont HudFont { get; private set; }
         public static SpriteFont TitleFont { get; private set; }
         public static SpriteFont DebugFont { get; private set; }
+        public static SoundEffect JumpSound,
+            CoinSound;
+
+        //public static List<SoundEffect> soundEffects;
 
         public static void Load(ContentManager content)
         {
             ButtonTexture = content.Load<Texture2D>("Controls/Button");
-            BoostTexture = content.Load<Texture2D>("boost");
+            MuteTexture = content.Load<Texture2D>("Controls/mute");
+            UnmuteTexture = content.Load<Texture2D>("Controls/unmute");
 
+            BoostTexture = content.Load<Texture2D>("boost");
             BackgroundTexture = content.Load<Texture2D>("bg");
             CloudTexture = content.Load<Texture2D>("cloud");
 
@@ -48,6 +59,9 @@ namespace FlappyBox
                 HudFont = content.Load<SpriteFont>("Fonts/HudFont");
                 TitleFont = content.Load<SpriteFont>("Fonts/TitleFont");
             }
+
+            JumpSound = content.Load<SoundEffect>("Sounds/jump");
+            CoinSound = content.Load<SoundEffect>("Sounds/coin");
         }
     }
 }

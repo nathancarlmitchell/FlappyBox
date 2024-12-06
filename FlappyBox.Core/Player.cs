@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using FlappyBox.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using FlappyBox.States;
 
 namespace FlappyBox
 {
@@ -16,6 +16,8 @@ namespace FlappyBox
             wingLeft,
             wingRight;
         private AnimatedTexture currentTexture;
+
+        private static readonly Random rand = new();
 
         private const float rotation = 0;
         private const float scale = 1f;
@@ -103,6 +105,13 @@ namespace FlappyBox
                 return;
             }
             this.Velocity = _jumpVelocity;
+
+            // Play jump sound.
+            if (!Game1.Mute)
+            {
+                float pitch = (float)(rand.NextDouble() * (0.4 - -0.4) + -0.4);
+                Art.JumpSound.Play(0.4f, pitch, 0.0f);
+            }
         }
 
         public void ChangeSkin(string skin, int frames, int fps)

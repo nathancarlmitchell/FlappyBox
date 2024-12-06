@@ -3,6 +3,7 @@ using System.Diagnostics;
 using FlappyBox.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace FlappyBox
 {
@@ -10,6 +11,8 @@ namespace FlappyBox
     {
         private GraphicsDeviceManager Graphics;
         public SpriteBatch SpriteBatch;
+        private KeyboardState currentKeyboard,
+            previousKeyboard;
         private State currentState,
             nextState;
 
@@ -37,6 +40,7 @@ namespace FlappyBox
         }
         public static int Scale { get; set; }
         public static int Width { get; set; }
+        public static bool Mute { get; set; }
 
         public Game1()
         {
@@ -53,6 +57,7 @@ namespace FlappyBox
         protected override void Initialize()
         {
             IsMouseVisible = true;
+            Mute = false;
             Window.Title = "Flappy Box";
 
             if (OperatingSystem.IsAndroid())
@@ -152,6 +157,16 @@ namespace FlappyBox
             currentState.Update(gameTime);
             currentState.PostUpdate(gameTime);
             base.Update(gameTime);
+
+            // Check keybord input.
+            previousKeyboard = currentKeyboard;
+            currentKeyboard = Keyboard.GetState();
+
+            if (currentKeyboard.IsKeyDown(Keys.M) && !previousKeyboard.IsKeyDown(Keys.M))
+            {
+                Mute = !Mute;
+                Overlay.ToggleAudio();
+            }
         }
 
         protected override void Draw(GameTime gameTime)

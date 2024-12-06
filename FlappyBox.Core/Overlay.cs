@@ -109,5 +109,33 @@ namespace FlappyBox
                 Color.Black
             );
         }
+
+        private static float muteCooldown = 0.0f;
+
+        public static void ToggleAudio()
+        {
+            while (muteCooldown < 1.0f)
+            {
+                muteCooldown += 0.01f;
+                spriteBatch.Begin();
+                if (Game1.Mute)
+                {
+                    spriteBatch.Draw(
+                        Art.MuteTexture,
+                        new Vector2(0, Game1.ScreenHeight - (Art.MuteTexture.Height)),
+                        Color.White * 1
+                    );
+                }
+                else
+                {
+                    spriteBatch.Draw(
+                        Art.UnmuteTexture,
+                        new Vector2(0, Game1.ScreenHeight - (Art.UnmuteTexture.Height)),
+                        Color.White * 1
+                    );
+                }
+                spriteBatch.End();
+            }
+        }
     }
 }
