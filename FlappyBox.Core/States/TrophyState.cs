@@ -1,21 +1,17 @@
 using System;
 using System.Collections.Generic;
+using FlappyBox.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-using FlappyBox.Controls;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace FlappyBox.States
 {
     public class TrophyState : State
     {
-        private KeyboardState _currentKeyboard,
-            _previousKeyboard;
-        private List<Button> _components;
-        private Menu _menu;
+        private List<Button> buttons;
+        private Menu menu;
         private AnimatedTexture trophySprite;
         private SpriteFont hudFont;
 
@@ -24,26 +20,18 @@ namespace FlappyBox.States
         public TrophyState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
             : base()
         {
-            _game.IsMouseVisible = true;
+            Game1.Instance.IsMouseVisible = true;
 
             Background.SetAlpha(0.5f);
 
             hudFont = Art.HudFont;
-
             trophySprite = Art.TrophySprite;
-            //_trophySprite = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
-            //_trophySprite.Load(_content, "trophy", 1, 1);
 
-            var backButton = new Button()
-            {
-                Text = "Back",
-            };
-
+            var backButton = new Button() { Text = "Back" };
             backButton.Click += BackButton_Click;
 
-            _components = new List<Button>() { backButton };
-
-            _menu = new Menu(_components);
+            buttons = new List<Button>() { backButton };
+            menu = new Menu(buttons);
 
             Util.LoadTrophyData(content);
 
@@ -52,12 +40,12 @@ namespace FlappyBox.States
 
             for (int i = 0; i < Trophys.Count; i++)
             {
-            //    Skins[i].Click += Skin_Click;
+                //    Skins[i].Click += Skin_Click;
 
-            //    if (Skins[i].Selected)
-            //    {
-            //        Skins[i].Activate();
-            //    }
+                //    if (Skins[i].Selected)
+                //    {
+                //        Skins[i].Activate();
+                //    }
             }
 
             //Skins = Skins.OrderBy(o => o.Cost).ToList();
@@ -71,15 +59,18 @@ namespace FlappyBox.States
                 {
                     case "Tiny Wings":
                         if (GameState.HighScore >= 1000)
-                            Trophys[i].Locked = false; break;
+                            Trophys[i].Locked = false;
+                        break;
 
                     case "Angry Birds":
                         if (GameState.HighScore >= 5000)
-                            Trophys[i].Locked = false; break;
+                            Trophys[i].Locked = false;
+                        break;
 
                     case "Flight Simulator":
                         if (GameState.HighScore >= 10000)
-                            Trophys[i].Locked = false; break;
+                            Trophys[i].Locked = false;
+                        break;
 
                     case "Sunscreen":
                         Trophys[i].Locked = false;
@@ -89,11 +80,13 @@ namespace FlappyBox.States
                             {
                                 Trophys[i].Locked = true;
                             }
-                        } break;
+                        }
+                        break;
 
                     case "Bezos":
                         if (GameState.TotalCoins >= 100)
-                            Trophys[i].Locked = false; break;
+                            Trophys[i].Locked = false;
+                        break;
                 }
             }
             Util.SaveTrophyData();
@@ -106,24 +99,15 @@ namespace FlappyBox.States
             // Draw the background.
             Background.Draw(gameTime, spriteBatch);
 
-            // Draw coins on HUD.
-            //spriteBatch.DrawString(
-            //    hudFont,
-            //    " x " + GameState.Coins,
-            //    new Vector2(GameState.CoinHUD.X + 16, GameState.CoinHUD.Y - 8),
-            //    Color.Black
-            //);
-            //GameState.CoinHUD.coinTexture.DrawFrame(
-            //    spriteBatch,
-            //    new Vector2(GameState.CoinHUD.X, GameState.CoinHUD.Y)
-            //);
-
             // Draw trophys.
             for (int i = 0; i < Trophys.Count; i++)
             {
                 int _centerComponent = Trophys.Count / 2;
                 int _difference = i - _centerComponent;
-                int _x = MenuState.CenterWidth + _difference * 175 - ((64 * Game1.Scale) / Trophys.Count);
+                int _x =
+                    MenuState.CenterWidth
+                    + _difference * 175
+                    - ((64 * Game1.Scale) / Trophys.Count);
                 int _y = MenuState.CenterHeight - 128 - 16;
 
                 string name = "???";
@@ -141,7 +125,10 @@ namespace FlappyBox.States
                 spriteBatch.DrawString(
                     hudFont,
                     name,
-                    new Vector2(_x - (hudFont.MeasureString(name).X / 2) + (trophySprite.Width / 2), _y + 72),
+                    new Vector2(
+                        _x - (hudFont.MeasureString(name).X / 2) + (trophySprite.Width / 2),
+                        _y + 72
+                    ),
                     titleColor
                 );
 
@@ -150,8 +137,13 @@ namespace FlappyBox.States
                 {
                     spriteBatch.DrawString(
                         hudFont,
-                    description,
-                        new Vector2(_x - (hudFont.MeasureString(description).X / 2) + (trophySprite.Width / 2), _y - 72),
+                        description,
+                        new Vector2(
+                            _x
+                                - (hudFont.MeasureString(description).X / 2)
+                                + (trophySprite.Width / 2),
+                            _y - 72
+                        ),
                         Color.White
                     );
                 }
@@ -172,7 +164,7 @@ namespace FlappyBox.States
             }
 
             // Draw the button menu.
-            _menu.Draw(gameTime, spriteBatch);
+            menu.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
         }
@@ -209,105 +201,24 @@ namespace FlappyBox.States
 
         private void BackButton_Click(object sender, EventArgs e)
         {
-            MainMenu();
+            Input.MainMenu();
         }
-
-        //private void LeftArrowKey(int direction)
-        //{
-        //    int selected = 0;
-
-        //    for (int i = 0; i < Skins.Count; i++)
-        //    {
-        //        if (Skins[i].Selected)
-        //        {
-        //            selected = i;
-        //        }
-        //    }
-
-        //    Skins[selected].Deactivate();
-
-        //    if (selected == 0)
-        //    {
-        //        Console.WriteLine("Reset");
-        //        selected = Skins.Count;
-        //    }
-
-        //    bool skinLocked = true;
-        //    while (skinLocked)
-        //    {
-        //        if (Skins[selected + direction].Locked)
-        //        {
-        //            selected += direction;
-        //        }
-        //        else
-        //        {
-        //            skinLocked = false;
-        //        }
-        //    }
-        //    Skins[selected + direction].Activate();
-        //}
-
-        //private void RightArrowKey()
-        //{
-        //    int selected = 0;
-        //    int unlockedCount = 0;
-        //    for (int i = 0; i < Skins.Count; i++)
-        //    {
-        //        if (!Skins[i].Locked)
-        //            unlockedCount += 1;
-        //        if (Skins[i].Selected)
-        //        {
-        //            selected = i;
-        //        }
-        //    }
-
-        //    Skins[selected].Deactivate();
-
-        //    if (selected == Skins.Count)
-        //    {
-        //        selected = 0;
-        //    }
-
-        //    bool skinLocked = true;
-        //    while (skinLocked)
-        //    {
-        //        if (selected + 1 == Skins.Count)
-        //            selected = -1;
-
-        //        if (Skins[selected + 1].Locked)
-        //        {
-        //            selected += 1;
-        //        }
-        //        else
-        //        {
-        //            skinLocked = false;
-        //        }
-        //    }
-        //    Skins[selected + 1].Activate();
-        //}
 
         public override void PostUpdate(GameTime gameTime)
         {
             //throw new NotImplementedException();
         }
 
-        public void MainMenu()
-        {
-            _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
-        }
-
         public override void Update(GameTime gameTime)
         {
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             Background.Update(gameTime);
 
-            // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();
-
-            foreach (var component in _components)
+            foreach (var button in buttons)
             {
-                component.Update(gameTime, touchCollection);
+                button.Update(gameTime, touchCollection);
             }
 
             TouchCollection touchState = TouchPanel.GetState();
@@ -317,25 +228,6 @@ namespace FlappyBox.States
             }
 
             //_arrowSprite.UpdateFrame(elapsed);
-
-            // Check player input.
-            _previousKeyboard = _currentKeyboard;
-            _currentKeyboard = Keyboard.GetState();
-            // Left.
-            //if (_currentKeyboard.IsKeyDown(Keys.Left) && !_previousKeyboard.IsKeyDown(Keys.Left))
-            //{
-            //    //this.LeftArrowKey(-1);
-            //}
-            // Right.
-            //if (_currentKeyboard.IsKeyDown(Keys.Right) && !_previousKeyboard.IsKeyDown(Keys.Right))
-            //{
-            //    //this.RightArrowKey();
-            //}
-            // Enter.
-            if (_currentKeyboard.IsKeyDown(Keys.Enter) && !_previousKeyboard.IsKeyUp(Keys.Enter))
-            {
-                MainMenu();
-            }
         }
     }
 }

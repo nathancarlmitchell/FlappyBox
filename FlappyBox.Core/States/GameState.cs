@@ -30,7 +30,7 @@ namespace FlappyBox.States
         public GameState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
             : base()
         {
-            _game.IsMouseVisible = false;
+            Game1.Instance.IsMouseVisible = false;
 
             Util.LoadGameData();
 
@@ -46,14 +46,14 @@ namespace FlappyBox.States
 
             Player = new Player()
             {
-                X = ScreenWidth / 2,
-                Y = ScreenHeight / 2,
+                X = Game1.ScreenWidth / 2,
+                Y = Game1.ScreenHeight / 2,
                 Height = 64,
                 Width = 64,
             };
 
             // Set the selected player skin
-            Util.LoadSkinData(_content);
+            Util.LoadSkinData(content);
             GameState.Skins = SkinsState.Skins;
             if (GameState.Skins is not null)
             {
@@ -132,7 +132,7 @@ namespace FlappyBox.States
                 // Check collisions.
                 if (Player.CheckForCollisions(wallArray[i]))
                 {
-                    _game.ChangeState(new GameOverState(_game, _graphicsDevice, _content));
+                    game.ChangeState(new GameOverState(game, graphicsDevice, content));
                 }
 
                 // Update wall position.
@@ -204,79 +204,20 @@ namespace FlappyBox.States
         public override void Update(GameTime gameTime)
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //float currentTime = (float)gameTime.TotalGameTime.TotalSeconds;
 
+            // Update score.
             Score++;
             if (Score > HighScore)
             {
                 HighScore = Score;
             }
 
+            // Update background.
             Background.Update(gameTime);
 
-            // Rotate player.
-            //player.currentTexture.Rotation = (float)(alpha * Math.PI * 2) * 4;
-
-            // Update coin positions, check collisions, spawn.
             UpdateCoins(elapsed);
-
-            // Update wall positions, check collisions, spawn.
             UpdateWalls();
-
-            // Update player.
             Player.Update(elapsed, gameTime);
-
-            // Check keybord input.
-            KeyboardState state = Keyboard.GetState();
-
-            if (state.IsKeyDown(Keys.Space))
-            {
-                Player.Jump(Player.JumpVelocity);
-            }
-
-            if (state.IsKeyDown(Keys.LeftShift))
-            {
-                Player.Jump(Player.JumpVelocity * 2);
-            }
-
-            if (state.IsKeyDown(Keys.Escape))
-            {
-                _game.ChangeState(new PauseState(_game, _graphicsDevice, _content));
-            }
-
-            if (state.IsKeyDown(Keys.Q))
-            {
-                _game.ChangeState(new GameOverState(_game, _graphicsDevice, _content));
-            }
-
-            // Check touch input.
-            TouchCollection touchState = TouchPanel.GetState();
-
-            if (touchState.AnyTouch())
-            {
-                int x = (int)touchState.GetPosition().X;
-                int y = (int)touchState.GetPosition().Y;
-
-                if (
-                    x < Art.BoostTexture.Width
-                    && y > Game1.ScreenHeight - (Art.BoostTexture.Height * 2)
-                )
-                {
-                    Player.Jump(Player.JumpVelocity * 2);
-                    return;
-                }
-                Player.Jump(Player.JumpVelocity);
-            }
-
-            // Check player bounds
-            if (Player.Y > ScreenHeight - Player.Height / 2)
-            {
-                Player.Y = ScreenHeight - Player.Height / 2;
-            }
-            else if (Player.Y < Player.Height / 2)
-            {
-                Player.Y = Player.Height / 2;
-            }
         }
     }
 }

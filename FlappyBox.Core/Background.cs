@@ -93,7 +93,7 @@ namespace FlappyBox
             }
             if (cloud.X < 0 - cloudTexture.Width)
             {
-                cloud.X = GameState.ScreenWidth + cloudTexture.Width;
+                cloud.X = Game1.ScreenWidth + cloudTexture.Width;
             }
 
             // Update bird animation.

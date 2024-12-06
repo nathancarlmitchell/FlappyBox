@@ -5,26 +5,23 @@ using FlappyBox.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 
 namespace FlappyBox.States
 {
     public class SkinsState : State
     {
-        private KeyboardState currentKeyboard,
-            previousKeyboard;
-        private List<Button> buttons;
-        private Menu menu;
-        private AnimatedTexture arrowSprite;
-        private SpriteFont hudFont;
+        private readonly List<Button> buttons;
+        private readonly Menu menu;
+        private readonly AnimatedTexture arrowSprite;
+        private readonly SpriteFont hudFont;
 
         public static List<Skin> Skins { get; set; }
 
         public SkinsState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
             : base()
         {
-            _game.IsMouseVisible = true;
+            game.IsMouseVisible = true;
 
             Background.SetAlpha(0.5f);
 
@@ -32,11 +29,9 @@ namespace FlappyBox.States
             hudFont = Art.HudFont;
 
             var backButton = new Button() { Text = "Back" };
-
             backButton.Click += BackButton_Click;
 
             buttons = new List<Button>() { backButton };
-
             menu = new Menu(buttons);
 
             Util.LoadSkinData(content);
@@ -66,12 +61,12 @@ namespace FlappyBox.States
             {
                 int _centerComponent = Skins.Count / 2;
                 int _difference = i - _centerComponent;
-                int _x = MenuState.CenterWidth + _difference * 100 - (64 / Skins.Count);
-                int _y = MenuState.CenterHeight - 128 - 16;
+                int _x = CenterWidth + _difference * 100 - (64 / Skins.Count);
+                int _y = CenterHeight - 128 - 16;
 
                 if (Skins[i].Locked)
                 {
-                    Skins[i].LoadTexture(_content, "locked", 1, 1);
+                    Skins[i].LoadTexture(content, "locked", 1, 1);
                     spriteBatch.DrawString(
                         hudFont,
                         " x " + Skins[i].Cost,
@@ -133,10 +128,10 @@ namespace FlappyBox.States
 
         private void BackButton_Click(object sender, EventArgs e)
         {
-            MainMenu();
+            Input.MainMenu();
         }
 
-        private void LeftArrowKey(int direction)
+        public static void LeftArrowKey(int direction)
         {
             int selected = 0;
 
@@ -171,7 +166,7 @@ namespace FlappyBox.States
             Skins[selected + direction].Activate();
         }
 
-        private void RightArrowKey()
+        public static void RightArrowKey()
         {
             int selected = 0;
             int unlockedCount = 0;
@@ -215,11 +210,6 @@ namespace FlappyBox.States
             //throw new NotImplementedException();
         }
 
-        public void MainMenu()
-        {
-            _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
-        }
-
         public override void Update(GameTime gameTime)
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -228,42 +218,18 @@ namespace FlappyBox.States
 
             GameState.CoinHUD.CoinTexture.UpdateFrame(elapsed);
 
-            // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();
-
             foreach (var button in buttons)
             {
                 button.Update(gameTime, touchCollection);
             }
 
-            TouchCollection touchState = TouchPanel.GetState();
             foreach (var skin in Skins)
             {
-                skin.Update(gameTime, touchState);
+                skin.Update(gameTime);
             }
 
             arrowSprite.UpdateFrame(elapsed);
-
-            // Check player input.
-            previousKeyboard = currentKeyboard;
-            currentKeyboard = Keyboard.GetState();
-            // Left.
-            if (currentKeyboard.IsKeyDown(Keys.Left) && !previousKeyboard.IsKeyDown(Keys.Left))
-            {
-                this.LeftArrowKey(-1);
-                Util.SaveSkinData();
-            }
-            // Right.
-            if (currentKeyboard.IsKeyDown(Keys.Right) && !previousKeyboard.IsKeyDown(Keys.Right))
-            {
-                this.RightArrowKey();
-                Util.SaveSkinData();
-            }
-            // Enter.
-            if (currentKeyboard.IsKeyDown(Keys.Enter) && !previousKeyboard.IsKeyUp(Keys.Enter))
-            {
-                MainMenu();
-            }
         }
     }
 }

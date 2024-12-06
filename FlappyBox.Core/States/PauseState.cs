@@ -1,56 +1,36 @@
 using System;
 using System.Collections.Generic;
+using FlappyBox.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-using FlappyBox.Controls;
-using static System.Formats.Asn1.AsnWriter;
-using System.Drawing;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace FlappyBox.States
 {
     public class PauseState : State
     {
-        private List<Button> buttons;
-        private Menu menu;
+        private readonly List<Button> buttons;
+        private readonly Menu menu;
+
         public PauseState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-        : base()
+            : base()
         {
-            _game.IsMouseVisible = true;
+            game.IsMouseVisible = true;
 
             Background.Alpha(0.5);
 
-            var continueGameButton = new Button()
-            {
-                Text = "Continue",
-            };
-
+            var continueGameButton = new Button() { Text = "Continue" };
             continueGameButton.Click += ContinueGameButton_Click;
 
-            var mainMenuButton = new Button()
-            {
-                Text = "Main Menu",
-            };
-
+            var mainMenuButton = new Button() { Text = "Main Menu" };
             mainMenuButton.Click += MainMenuButton_Click;
 
-            var quitGameButton = new Button()
-            {
-                Text = "Quit",
-            };
-
+            var quitGameButton = new Button() { Text = "Quit" };
             quitGameButton.Click += QuitGameButton_Click;
 
-            buttons = new List<Button>()
-            {
-                continueGameButton,
-                mainMenuButton,
-                quitGameButton,
-            };
-
+            buttons = [continueGameButton, mainMenuButton, quitGameButton];
             menu = new Menu(buttons);
         }
 
@@ -63,8 +43,9 @@ namespace FlappyBox.States
             // Draw HUD.
             Overlay.DrawHUD();
 
-            spriteBatch.DrawString(Art.TitleFont, "Paused", new Vector2(Game1.ScreenWidth / 2 - (Art.TitleFont.MeasureString("Paused").X / 2), CenterHeight / 2),
-                Color.White, 0, Vector2.One, 1.0f, SpriteEffects.None, 0.5f);
+            float x = CenterWidth - (Art.TitleFont.MeasureString("Paused").X / 2);
+            float y = CenterHeight / 2;
+            spriteBatch.DrawString(Art.TitleFont, "Paused", new Vector2(x, y), Color.White);
 
             GameState.Player.Draw(spriteBatch);
 
@@ -73,48 +54,30 @@ namespace FlappyBox.States
             spriteBatch.End();
         }
 
-        private void ContinueGame()
-        {
-            _game.ChangeState(Game1.GameState);
-            Game1.Instance.IsMouseVisible = false;
-            Background.SetAlpha(100);
-        }
-
         private void ContinueGameButton_Click(object sender, EventArgs e)
         {
-            ContinueGame();
+            Input.ContinueGame();
         }
 
         private void MainMenuButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
+            game.ChangeState(new MenuState(game, graphicsDevice, content));
             Game1.GameState = null;
         }
 
         private void QuitGameButton_Click(object sender, EventArgs e)
         {
-            _game.Exit();
+            game.Exit();
         }
 
-        public override void PostUpdate(GameTime gameTime)
-        {
-
-        }
+        public override void PostUpdate(GameTime gameTime) { }
 
         public override void Update(GameTime gameTime)
         {
-            // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();
-
             foreach (var button in buttons)
             {
                 button.Update(gameTime, touchCollection);
-            }
-
-            // Check player input.
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
-            {
-                ContinueGame();
             }
         }
     }

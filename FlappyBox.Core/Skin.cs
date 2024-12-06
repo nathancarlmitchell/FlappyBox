@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FlappyBox.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-using FlappyBox.States;
 
 namespace FlappyBox
 {
     public class Skin : Object
     {
-        protected ContentManager _content;
-        private AnimatedTexture _texture;
-        private MouseState _currentMouse,
-            _previousMouse;
-        private bool _isHovering;
+        protected ContentManager content;
+        private AnimatedTexture texture;
+        private MouseState mouse,
+            previousMouse;
+        private bool isHovering;
 
         public int Frames = 2;
         public int FPS = 2;
@@ -27,66 +27,66 @@ namespace FlappyBox
         public Vector2 Position { get; set; }
         public event EventHandler Click;
         public bool Clicked { get; private set; }
-        public Rectangle Rectangle
+        public new Rectangle Rectangle
         {
             get { return new Rectangle((int)Position.X, (int)Position.Y, 64, 64); }
         }
 
-        public Skin(ContentManager content, String texture)
+        public Skin(ContentManager _content, String name)
         {
-            _content = content;
+            content = _content;
 
-            this.Name = texture;
+            this.Name = name;
 
             // Load the texture.
-            _texture = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
-            _texture.Load(_content, texture, Frames, FPS);
+            texture = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
+            texture.Load(content, name, Frames, FPS);
         }
 
-        public void LoadTexture(ContentManager content, String texture)
+        public void LoadTexture(ContentManager content, String name)
         {
-            _texture = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
-            _texture.Load(content, texture, Frames, FPS);
+            texture = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
+            texture.Load(content, name, Frames, FPS);
         }
 
-        public void LoadTexture(ContentManager content, String texture, int _frames, int _fps)
+        public void LoadTexture(ContentManager content, String name, int frames, int fps)
         {
-            _texture = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
-            _texture.Load(content, texture, _frames, _fps);
+            texture = new AnimatedTexture(new Vector2(0, 0), 0, 1f, 0.5f);
+            texture.Load(content, name, frames, fps);
         }
 
         public void Activate()
         {
-            string _name = this.Name.Split("_").Last();
-            _texture.Load(_content, "anim_jump_" + _name, Frames, FPS);
+            string name = this.Name.Split("_").Last();
+            texture.Load(content, "anim_jump_" + name, Frames, FPS);
             this.Selected = true;
         }
 
         public void Deactivate()
         {
-            string _name = this.Name.Split("_").Last();
-            _texture.Load(_content, "anim_idle_" + _name, Frames, FPS);
+            string name = this.Name.Split("_").Last();
+            texture.Load(content, "anim_idle_" + name, Frames, FPS);
             this.Selected = false;
         }
 
-        public void Update(GameTime gameTime, TouchCollection touchCollection)
+        public void Update(GameTime gameTime)
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            _previousMouse = _currentMouse;
-            _currentMouse = Mouse.GetState();
+            previousMouse = mouse;
+            mouse = Mouse.GetState();
 
-            var mouseRectangle = new Rectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
+            var mouseRectangle = new Rectangle(mouse.X, mouse.Y, 1, 1);
 
-            _isHovering = false;
+            isHovering = false;
 
             if (mouseRectangle.Intersects(Rectangle))
             {
-                _isHovering = true;
+                isHovering = true;
 
                 if (
-                    _currentMouse.LeftButton == ButtonState.Released
-                    && _previousMouse.LeftButton == ButtonState.Pressed
+                    mouse.LeftButton == ButtonState.Released
+                    && previousMouse.LeftButton == ButtonState.Pressed
                 )
                 {
                     Click?.Invoke(this, new EventArgs());
@@ -94,6 +94,7 @@ namespace FlappyBox
             }
 
             // Check touch input.
+            TouchCollection touchCollection = TouchPanel.GetState();
             if (touchCollection.AnyTouch())
             {
                 foreach (TouchLocation tl in touchCollection)
@@ -108,7 +109,7 @@ namespace FlappyBox
                 }
             }
 
-            _texture.UpdateFrame(elapsed);
+            texture.UpdateFrame(elapsed);
         }
 
         public void Draw(SpriteBatch _spriteBatch)
@@ -120,12 +121,12 @@ namespace FlappyBox
                 color = Color.White;
             }
 
-            if (_isHovering)
+            if (isHovering)
             {
                 color = Color.AntiqueWhite;
             }
 
-            _texture.DrawFrame(_spriteBatch, this.Position, color);
+            texture.DrawFrame(_spriteBatch, this.Position, color);
         }
     }
 }

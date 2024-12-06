@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reflection.Metadata;
 using FlappyBox.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace FlappyBox
 {
@@ -11,10 +11,9 @@ namespace FlappyBox
     {
         private GraphicsDeviceManager Graphics;
         public SpriteBatch SpriteBatch;
-        private KeyboardState currentKeyboard,
-            previousKeyboard;
-        private State currentState,
-            nextState;
+
+        private State nextState,
+            currentState;
 
         public static State GameState,
             SkinState,
@@ -37,6 +36,14 @@ namespace FlappyBox
         public static int ScreenHeight
         {
             get { return (int)ScreenSize.Y; }
+        }
+        public static int CenterWidth
+        {
+            get { return (int)(ScreenSize.X / 2); }
+        }
+        public static int CenterHeight
+        {
+            get { return (int)(ScreenSize.Y / 2); }
         }
         public static int Scale { get; set; }
         public static int Width { get; set; }
@@ -96,11 +103,13 @@ namespace FlappyBox
             Util.LoadTrophyData(Content);
 
             SpriteBatch = new SpriteBatch(GraphicsDevice);
-            run();
+
+            StartGame();
         }
 
-        protected void run()
+        protected void StartGame()
         {
+            new GameState(this, Graphics.GraphicsDevice, Content);
             currentState = new MenuState(this, Graphics.GraphicsDevice, Content);
         }
 
@@ -158,15 +167,8 @@ namespace FlappyBox
             currentState.PostUpdate(gameTime);
             base.Update(gameTime);
 
-            // Check keybord input.
-            previousKeyboard = currentKeyboard;
-            currentKeyboard = Keyboard.GetState();
-
-            if (currentKeyboard.IsKeyDown(Keys.M) && !previousKeyboard.IsKeyDown(Keys.M))
-            {
-                Mute = !Mute;
-                Overlay.ToggleAudio();
-            }
+            // Handles user input.
+            Input.Update(currentState);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -174,6 +176,7 @@ namespace FlappyBox
             GraphicsDevice.Clear(Color.CornflowerBlue);
             currentState.Draw(gameTime, SpriteBatch);
             base.Draw(gameTime);
+            Overlay.DrawAudio();
         }
     }
 }

@@ -1,24 +1,23 @@
 using System;
 using System.Collections.Generic;
+using FlappyBox.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-using FlappyBox.Controls;
 
 namespace FlappyBox.States
 {
     public class GameOverState : State
     {
-        private List<Button> butttons;
-        private Menu menu;
-        private SpriteFont titleFont;
+        private readonly List<Button> butttons;
+        private readonly Menu menu;
+        private readonly SpriteFont titleFont;
 
         public GameOverState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
             : base()
         {
-            _game.IsMouseVisible = true;
+            Game1.Instance.IsMouseVisible = true;
 
             GameState.GamesPlayed++;
 
@@ -29,29 +28,16 @@ namespace FlappyBox.States
 
             titleFont = Art.TitleFont;
 
-            var newGameButton = new Button()
-            {
-                Text = "New Game",
-            };
-
+            var newGameButton = new Button() { Text = "New Game" };
             newGameButton.Click += NewGameButton_Click;
 
-            var mainMenuButton = new Button()
-            {
-                Text = "Main Menu",
-            };
-
+            var mainMenuButton = new Button() { Text = "Main Menu" };
             mainMenuButton.Click += MainMenuButton_Click;
 
-            var quitGameButton = new Button()
-            {
-                Text = "Quit",
-            };
-
+            var quitGameButton = new Button() { Text = "Quit" };
             quitGameButton.Click += QuitGameButton_Click;
 
-            butttons = new List<Button>() { newGameButton, mainMenuButton, quitGameButton };
-
+            butttons = [newGameButton, mainMenuButton, quitGameButton];
             menu = new Menu(butttons);
         }
 
@@ -64,12 +50,9 @@ namespace FlappyBox.States
             // Draw HUD.
             Overlay.DrawHUD();
 
-            spriteBatch.DrawString(
-                titleFont,
-                "Game Over",
-                new Vector2(CenterWidth / 2, 128),
-                Color.AliceBlue
-            );
+            int x = CenterWidth / 2;
+            int y = 128;
+            spriteBatch.DrawString(titleFont, "Game Over", new Vector2(x, y), Color.AliceBlue);
 
             menu.Draw(gameTime, spriteBatch);
 
@@ -78,7 +61,7 @@ namespace FlappyBox.States
 
         private void NewGameButton_Click(object sender, EventArgs e)
         {
-            NewGame();
+            Input.NewGame();
         }
 
         private void MainMenuButton_Click(object sender, EventArgs e)
@@ -86,12 +69,12 @@ namespace FlappyBox.States
             Game1.GameState = null;
             GameState.Score = 0;
             GameState.Coins = 0;
-            _game.ChangeState(new MenuState(_game, _graphicsDevice, _content));
+            game.ChangeState(new MenuState(game, graphicsDevice, content));
         }
 
         private void QuitGameButton_Click(object sender, EventArgs e)
         {
-            _game.Exit();
+            game.Exit();
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -107,26 +90,11 @@ namespace FlappyBox.States
 
             GameState.CoinHUD.CoinTexture.UpdateFrame(elapsed);
 
-            // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();
             foreach (var button in butttons)
             {
                 button.Update(gameTime, touchCollection);
             }
-
-            // Check player input.
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
-            {
-                NewGame();
-            }
-        }
-
-        public void NewGame()
-        {
-            Game1.GameState = null;
-            GameState.Score = 0;
-            GameState.Coins = 0;
-            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
         }
     }
 }

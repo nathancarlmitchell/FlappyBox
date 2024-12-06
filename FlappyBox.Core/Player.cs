@@ -87,7 +87,7 @@ namespace FlappyBox
             this.Velocity += change;
 
             // Bounce bottom of screen.
-            if (this.Y >= GameState.ScreenHeight - this.Height / 2)
+            if (this.Y >= Game1.ScreenHeight - (this.Height / 2))
             {
                 if (this.Velocity == 0)
                 {
@@ -186,6 +186,16 @@ namespace FlappyBox
                     velocityCooldown = 0;
                 }
                 this.ChangeVelocity(-1);
+            }
+
+            // Check player bounds
+            if (this.Y > Game1.ScreenHeight - this.Height / 2)
+            {
+                this.Y = Game1.ScreenHeight - this.Height / 2;
+            }
+            else if (this.Y < this.Height / 2)
+            {
+                this.Y = this.Height / 2;
             }
 
             this.UpdateTexture();

@@ -25,8 +25,8 @@ namespace FlappyBox
 
             this.Height = 32;
             this.Width = 32;
-            this.X = GameState.ScreenWidth;
-            this.Y = GameState.CenterHeight;
+            this.X = Game1.ScreenWidth;
+            this.Y = Game1.ScreenHeight / 2;
 
             CoinTexture = new AnimatedTexture(
                 new Vector2(this.Height / 2, this.Width / 2),

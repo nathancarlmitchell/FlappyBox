@@ -7,14 +7,15 @@ namespace FlappyBox.States
     public abstract class State
     {
         #region Fields
-        protected ContentManager _content;
-        protected GraphicsDevice _graphicsDevice;
-        protected Game1 _game;
-        private static int _centerHeight;
-        private static int _centerWidth;
-        private static int _screenHeight;
-        private static int _screenWidth;
-        //private static int _controlWidthCenter;
+        protected ContentManager content;
+        protected GraphicsDevice graphicsDevice;
+        protected Game1 game;
+
+        private static int centerWidth;
+        private static int centerHeight;
+        private static int screenWidth;
+        private static int screenHeight;
+        private static int controlWidthCenter;
 
         #endregion
 
@@ -25,37 +26,41 @@ namespace FlappyBox.States
 
         public State()
         {
-            _game = Game1.Instance;
-            _graphicsDevice = Game1.Instance.GraphicsDevice;
-            _content = Game1.Instance.Content;
+            game = Game1.Instance;
+            graphicsDevice = Game1.Instance.GraphicsDevice;
+            content = Game1.Instance.Content;
 
-            _centerWidth = (Game1.ScreenWidth / 2);
-            _centerHeight = (Game1.ScreenHeight / 2);
+            centerWidth = Game1.CenterWidth;
+            centerHeight = Game1.CenterHeight;
 
-            _screenWidth = Game1.ScreenWidth;
-            _screenHeight = Game1.ScreenHeight;
+            screenWidth = Game1.ScreenWidth;
+            screenHeight = Game1.ScreenHeight;
 
-            //_controlWidthCenter = (Game1.ScreenWidth / 2) - ((Art.ButtonTexture.Width / 2) * Game1.Scale);
+            controlWidthCenter = centerWidth - ((Art.ButtonTexture.Width / 2) * Game1.Scale);
         }
 
         public static int ScreenHeight
         {
-            get { return _screenHeight; }
+            get { return screenHeight; }
         }
 
         public static int ScreenWidth
         {
-            get { return _screenWidth; }
+            get { return screenWidth; }
         }
 
         public static int CenterHeight
         {
-            get { return _centerHeight; }
+            get { return centerHeight; }
         }
 
         public static int CenterWidth
         {
-            get { return _centerWidth; }
+            get { return centerWidth; }
+        }
+        public static int ControlWidthCenter
+        {
+            get { return centerWidth; }
         }
 
         public abstract void Update(GameTime gameTime);

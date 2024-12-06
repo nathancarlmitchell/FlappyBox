@@ -57,6 +57,7 @@ namespace FlappyBox.Controls
             _scale = Game1.Scale;
             PenColor = Color.Black;
         }
+
         public Button(Texture2D texture, SpriteFont font)
         {
             _texture = texture;

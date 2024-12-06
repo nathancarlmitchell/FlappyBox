@@ -14,10 +14,10 @@ namespace FlappyBox
 {
     public class Trophy : Object
     {
-        protected ContentManager _content;
-        private AnimatedTexture _texture;
-        private MouseState _currentMouse,
-            _previousMouse;
+        protected ContentManager content;
+        private AnimatedTexture texture;
+        private MouseState mouse,
+            previousMouse;
 
         public bool IsHovering;
 
@@ -30,39 +30,44 @@ namespace FlappyBox
         public Vector2 Position { get; set; }
         public event EventHandler Click;
         public bool Clicked { get; private set; }
-        public Rectangle Rectangle
+        public new Rectangle Rectangle
         {
             get { return new Rectangle((int)Position.X, (int)Position.Y, 64, 64); }
         }
 
-        public Trophy(ContentManager content, String texture)
+        public Trophy(ContentManager _content, String _texture)
         {
-            _content = content;
+            this.content = _content;
 
-            //this.Name = texture;
+            //this.Name = _texture;
 
             // Load the texture.
-            _texture = Art.TrophySprite;
+            this.texture = Art.TrophySprite;
         }
 
         public void Update(GameTime gameTime, TouchCollection touchCollection)
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            _previousMouse = _currentMouse;
-            _currentMouse = Mouse.GetState();
+            this.IsHovering = false;
+            this.Selected = false;
 
-            var mouseRectangle = new Rectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
+            previousMouse = mouse;
+            mouse = Mouse.GetState();
 
-            IsHovering = false;
-
+            var mouseRectangle = new Rectangle(mouse.X, mouse.Y, 1, 1);
             if (mouseRectangle.Intersects(Rectangle))
             {
-                IsHovering = true;
+                // This needs to be fixed.
+                // Android flashes the desction text because mouseRectangle.
+                if (!OperatingSystem.IsAndroid())
+                {
+                    this.IsHovering = true;
+                }
 
                 if (
-                    _currentMouse.LeftButton == ButtonState.Released
-                    && _previousMouse.LeftButton == ButtonState.Pressed
+                    mouse.LeftButton == ButtonState.Released
+                    && previousMouse.LeftButton == ButtonState.Pressed
                 )
                 {
                     Click?.Invoke(this, new EventArgs());
@@ -85,10 +90,10 @@ namespace FlappyBox
                 }
             }
 
-            _texture.UpdateFrame(elapsed);
+            texture.UpdateFrame(elapsed);
         }
 
-        public void Draw(SpriteBatch _spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             var color = Color.Black;
 
@@ -102,7 +107,7 @@ namespace FlappyBox
                 color = Color.AntiqueWhite;
             }
 
-            _texture.DrawFrame(_spriteBatch, this.Position, color);
+            texture.DrawFrame(spriteBatch, this.Position, color);
         }
     }
 }

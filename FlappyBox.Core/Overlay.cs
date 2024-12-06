@@ -110,20 +110,25 @@ namespace FlappyBox
             );
         }
 
-        private static float muteCooldown = 0.0f;
+        private static float muteCooldown = 1.0f;
 
         public static void ToggleAudio()
         {
-            while (muteCooldown < 1.0f)
+            muteCooldown = 1.0f;
+        }
+
+        public static void DrawAudio()
+        {
+            if (muteCooldown > 0.0f)
             {
-                muteCooldown += 0.01f;
+                muteCooldown -= 0.005f;
                 spriteBatch.Begin();
                 if (Game1.Mute)
                 {
                     spriteBatch.Draw(
                         Art.MuteTexture,
                         new Vector2(0, Game1.ScreenHeight - (Art.MuteTexture.Height)),
-                        Color.White * 1
+                        Color.White * muteCooldown
                     );
                 }
                 else
@@ -131,7 +136,7 @@ namespace FlappyBox
                     spriteBatch.Draw(
                         Art.UnmuteTexture,
                         new Vector2(0, Game1.ScreenHeight - (Art.UnmuteTexture.Height)),
-                        Color.White * 1
+                        Color.White * muteCooldown
                     );
                 }
                 spriteBatch.End();

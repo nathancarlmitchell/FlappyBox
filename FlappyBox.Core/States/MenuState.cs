@@ -1,60 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using FlappyBox.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-using FlappyBox.Controls;
-using System.Xml.Linq;
 
 namespace FlappyBox.States
 {
     public class MenuState : State
     {
-        private List<Button> buttons;
-        private Menu menu;
-        private SpriteFont titleFont;
+        private readonly List<Button> buttons;
+        private readonly Menu menu;
 
         public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
             : base()
         {
-            new GameState(_game, _graphicsDevice, _content);
+            Game1.Instance.IsMouseVisible = true;
 
-            _game.IsMouseVisible = true;
-
-            titleFont = Art.TitleFont;
-
-            var newGameButton = new Button()
-            {
-                Text = "New Game",
-            };
-
+            var newGameButton = new Button() { Text = "New Game" };
             newGameButton.Click += NewGameButton_Click;
 
-            var loadSkinsButton = new Button()
-            {
-                Text = "Skins",
-            };
-
+            var loadSkinsButton = new Button() { Text = "Skins" };
             loadSkinsButton.Click += LoadSkinsButton_Click;
 
-            var trophyButton = new Button()
-            {
-                Text = "Achievements",
-            };
-
+            var trophyButton = new Button() { Text = "Achievements" };
             trophyButton.Click += TrophyButton_Click;
 
-            var quitGameButton = new Button()
-            {
-                Text = "Quit",
-            };
-
+            var quitGameButton = new Button() { Text = "Quit" };
             quitGameButton.Click += QuitGameButton_Click;
 
-            buttons = new List<Button>() { newGameButton, loadSkinsButton, trophyButton, quitGameButton };
-
+            buttons = [newGameButton, loadSkinsButton, trophyButton, quitGameButton];
             menu = new Menu(buttons);
         }
 
@@ -76,21 +52,22 @@ namespace FlappyBox.States
 
         private void TrophyButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new TrophyState(_game, _graphicsDevice, _content));
+            game.ChangeState(new TrophyState(game, graphicsDevice, content));
         }
 
         private void LoadSkinsButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new SkinsState(_game, _graphicsDevice, _content));
+            game.ChangeState(new SkinsState(game, graphicsDevice, content));
         }
 
         private void NewGameButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
+            Input.NewGame();
         }
+
         private void QuitGameButton_Click(object sender, EventArgs e)
         {
-            _game.Exit();
+            game.Exit();
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -102,19 +79,10 @@ namespace FlappyBox.States
         {
             Background.Update(gameTime);
 
-            // Check touch input.
             TouchCollection touchCollection = TouchPanel.GetState();
-
             foreach (var button in buttons)
             {
                 button.Update(gameTime, touchCollection);
-            }
-
-            // Check player input.
-            KeyboardState state = Keyboard.GetState();
-            if (state.IsKeyDown(Keys.Space) || state.IsKeyDown(Keys.Enter))
-            {
-                _game.ChangeState(new GameState(_game, _graphicsDevice, _content));
             }
         }
     }
