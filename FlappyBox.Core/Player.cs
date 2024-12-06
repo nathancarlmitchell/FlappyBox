@@ -17,8 +17,6 @@ namespace FlappyBox
             wingRight;
         private AnimatedTexture currentTexture;
 
-        private static readonly Random rand = new();
-
         private const float rotation = 0;
         private const float scale = 1f;
         private const float depth = 0.5f;
@@ -98,20 +96,16 @@ namespace FlappyBox
             }
         }
 
-        public void Jump(int _jumpVelocity)
+        public void Jump(int jumpVelocity)
         {
             if (this.Velocity > -2)
             {
                 return;
             }
-            this.Velocity = _jumpVelocity;
+            this.Velocity = jumpVelocity;
 
             // Play jump sound.
-            if (!Game1.Mute)
-            {
-                float pitch = (float)(rand.NextDouble() * (0.4 - -0.4) + -0.4);
-                Art.JumpSound.Play(0.4f, pitch, 0.0f);
-            }
+            Sound.Play(Sound.Jump, 0.4f, 0.4f);
         }
 
         public void ChangeSkin(string skin, int frames, int fps)

@@ -96,7 +96,8 @@ namespace FlappyBox
         protected override void LoadContent()
         {
             Art.Load(Content);
-            Background.SetAlpha(0.5);
+            Sound.Load(Content);
+
             Util.CheckOS();
             Util.LoadGameData();
             Util.LoadSkinData(Content);

@@ -14,6 +14,8 @@ namespace FlappyBox.States
         private readonly Menu menu;
         private readonly SpriteFont titleFont;
 
+        private bool isHighScore = false;
+
         public GameOverState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
             : base()
         {
@@ -23,6 +25,11 @@ namespace FlappyBox.States
 
             Util.SaveGameData();
             Util.SaveSkinData();
+
+            if (GameState.Score >= GameState.HighScore)
+            {
+                this.isHighScore = true;
+            }
 
             Background.SetAlpha(0.33f);
 
@@ -41,6 +48,8 @@ namespace FlappyBox.States
             menu = new Menu(butttons);
         }
 
+        int textCooldown = 0;
+
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
@@ -50,9 +59,36 @@ namespace FlappyBox.States
             // Draw HUD.
             Overlay.DrawHUD();
 
-            int x = CenterWidth / 2;
+            int x;
             int y = 128;
-            spriteBatch.DrawString(titleFont, "Game Over", new Vector2(x, y), Color.AliceBlue);
+
+            string text;
+            Color color;
+
+            if (isHighScore)
+            {
+                textCooldown++;
+                text = "High Score";
+                color = Color.Gold;
+                if (textCooldown > 5)
+                {
+                    color = Color.AliceBlue;
+                }
+                if (textCooldown > 10)
+                {
+                    textCooldown = 0;
+                }
+            }
+            else
+            {
+                text = "Game Over";
+                color = Color.AliceBlue;
+            }
+
+            x = (int)(CenterWidth - (titleFont.MeasureString(text).X / 2));
+
+            spriteBatch.DrawString(titleFont, text, new Vector2(x - 4, y + 4), Color.Black * 0.5f);
+            spriteBatch.DrawString(titleFont, text, new Vector2(x, y), color);
 
             menu.Draw(gameTime, spriteBatch);
 
@@ -66,10 +102,7 @@ namespace FlappyBox.States
 
         private void MainMenuButton_Click(object sender, EventArgs e)
         {
-            Game1.GameState = null;
-            GameState.Score = 0;
-            GameState.Coins = 0;
-            game.ChangeState(new MenuState(game, graphicsDevice, content));
+            Input.MainMenu();
         }
 
         private void QuitGameButton_Click(object sender, EventArgs e)

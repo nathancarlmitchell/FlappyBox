@@ -19,7 +19,7 @@ namespace FlappyBox.States
         {
             game.IsMouseVisible = true;
 
-            Background.Alpha(0.5);
+            Background.SetAlpha(0.5);
 
             var continueGameButton = new Button() { Text = "Continue" };
             continueGameButton.Click += ContinueGameButton_Click;

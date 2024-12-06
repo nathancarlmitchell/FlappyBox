@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Metadata;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -23,10 +21,6 @@ namespace FlappyBox
         public static SpriteFont HudFont { get; private set; }
         public static SpriteFont TitleFont { get; private set; }
         public static SpriteFont DebugFont { get; private set; }
-        public static SoundEffect JumpSound,
-            CoinSound;
-
-        //public static List<SoundEffect> soundEffects;
 
         public static void Load(ContentManager content)
         {
@@ -59,9 +53,6 @@ namespace FlappyBox
                 HudFont = content.Load<SpriteFont>("Fonts/HudFont");
                 TitleFont = content.Load<SpriteFont>("Fonts/TitleFont");
             }
-
-            JumpSound = content.Load<SoundEffect>("Sounds/jump");
-            CoinSound = content.Load<SoundEffect>("Sounds/coin");
         }
     }
 }

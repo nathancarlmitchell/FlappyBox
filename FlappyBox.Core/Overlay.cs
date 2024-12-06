@@ -12,15 +12,21 @@ namespace FlappyBox
         public static void DrawTitle()
         {
             // Draw title.
+            SpriteFont font = Art.TitleFont;
+            string text = "Flappy Box";
+            int x = (int)((Game1.Width / 2) - (font.MeasureString(text).X / 2));
+            int y = 128 / Game1.Scale;
+
+            // Draw text shadow.
             spriteBatch.DrawString(
-                Art.TitleFont,
-                "Flappy Box",
-                new Vector2(
-                    (Game1.Width / 2) - (Art.TitleFont.MeasureString("Flappy Box").X / 2),
-                    128 / Game1.Scale
-                ),
-                Color.AliceBlue
+                font,
+                text,
+                new Vector2(x - 4, y + 4),
+                Color.Black * (Background.GetAlpha() - 0.25f)
             );
+
+            // Draw text.
+            spriteBatch.DrawString(font, text, new Vector2(x, y), Color.AliceBlue);
         }
 
         public static void DrawHUD(bool drawScore = true)

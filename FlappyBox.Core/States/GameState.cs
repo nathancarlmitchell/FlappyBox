@@ -175,11 +175,7 @@ namespace FlappyBox.States
                     TotalCoins++;
 
                     // Play coin sound
-                    if (!Game1.Mute)
-                    {
-                        float pitch = (float)(rand.NextDouble() * (0.2 - -0.2) + -0.2);
-                        Art.CoinSound.Play(0.25f, pitch, 0.0f);
-                    }
+                    Sound.Play(Sound.Coin, 0.25f);
                 }
 
                 // Despawn offscreen coins.

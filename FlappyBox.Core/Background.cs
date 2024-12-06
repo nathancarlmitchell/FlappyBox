@@ -32,9 +32,9 @@ namespace FlappyBox
             targetAlpha = _alpha;
         }
 
-        public static void Alpha(double _alpha)
+        public static float GetAlpha()
         {
-            alpha = _alpha;
+            return (float)alpha;
         }
 
         public static void UpdateAlpha()

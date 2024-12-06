@@ -62,5 +62,7 @@ namespace FlappyBox
                 this.direction = !this.direction;
             }
         }
+
+        public void Update() { }
     }
 }
