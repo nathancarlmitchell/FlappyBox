@@ -175,7 +175,7 @@ namespace FlappyBox.States
                     TotalCoins++;
 
                     // Play coin sound
-                    Sound.Play(Sound.Coin, 0.25f);
+                    Sound.Play(Sound.Coin, 0.15f);
                 }
 
                 // Despawn offscreen coins.

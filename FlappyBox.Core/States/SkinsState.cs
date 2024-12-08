@@ -103,7 +103,7 @@ namespace FlappyBox.States
                 {
                     Skins[i].Deactivate();
                 }
-
+                Sound.Play(Sound.Blip, 0.75f);
                 skin.Activate();
             }
             else
@@ -118,8 +118,10 @@ namespace FlappyBox.States
                     skin.Locked = false;
                     skin.Activate();
                     Console.WriteLine("Skin unlocked.");
+                    Sound.Play(Sound.Unlock, 0.5f);
                 }
                 Console.WriteLine("Skin Locked.");
+                Sound.Play(Sound.Locked, 0.75f);
             }
 
             Util.SaveGameData();
@@ -133,6 +135,7 @@ namespace FlappyBox.States
 
         public static void LeftArrowKey(int direction)
         {
+            Sound.Play(Sound.Blip, 0.75f);
             int selected = 0;
 
             for (int i = 0; i < Skins.Count; i++)
@@ -168,6 +171,7 @@ namespace FlappyBox.States
 
         public static void RightArrowKey()
         {
+            Sound.Play(Sound.Blip, 0.75f);
             int selected = 0;
             int unlockedCount = 0;
             for (int i = 0; i < Skins.Count; i++)

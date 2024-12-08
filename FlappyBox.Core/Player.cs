@@ -93,6 +93,7 @@ namespace FlappyBox
                     return;
                 }
                 this.Velocity = Math.Abs(this.Velocity) / 2;
+                Sound.Play(Sound.Locked, 0.25f);
             }
         }
 

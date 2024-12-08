@@ -66,6 +66,12 @@ namespace FlappyBox.Controls
             PenColor = Color.Black;
         }
 
+        public void Pressed()
+        {
+            Click?.Invoke(this, new EventArgs());
+            Sound.Play(Sound.Button, 0.25f);
+        }
+
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             var color = Color.White;
@@ -104,7 +110,7 @@ namespace FlappyBox.Controls
                     && previousMouse.LeftButton == ButtonState.Pressed
                 )
                 {
-                    Click?.Invoke(this, new EventArgs());
+                    Pressed();
                 }
             }
 
@@ -132,7 +138,7 @@ namespace FlappyBox.Controls
                     var touchRectangle = new Rectangle(x, y, 1, 1);
                     if (touchRectangle.Intersects(Rectangle))
                     {
-                        Click?.Invoke(this, new EventArgs());
+                        Pressed();
                     }
                 }
             }

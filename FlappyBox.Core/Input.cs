@@ -28,8 +28,19 @@ namespace FlappyBox
             // Toggle Mute
             if (keyboard.IsKeyDown(Keys.M) && !previousKeyboard.IsKeyDown(Keys.M))
             {
-                Game1.Mute = !Game1.Mute;
-                Overlay.ToggleAudio();
+                Sound.ToggleMute();
+            }
+
+            // Volume up
+            if (keyboard.IsKeyDown(Keys.Add) && !previousKeyboard.IsKeyDown(Keys.Add))
+            {
+                Sound.SongVolume(0.05f);
+            }
+
+            // Volume down
+            if (keyboard.IsKeyDown(Keys.Subtract) && !previousKeyboard.IsKeyDown(Keys.Subtract))
+            {
+                Sound.SongVolume(-0.05f);
             }
 
             // State specific input.
