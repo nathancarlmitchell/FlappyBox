@@ -106,7 +106,7 @@ namespace FlappyBox
             this.Velocity = jumpVelocity;
 
             // Play jump sound.
-            Sound.Play(Sound.Jump, 0.4f, 0.4f);
+            Sound.Play(Sound.Jump, 0.4f, 0.2f);
         }
 
         public void ChangeSkin(string skin, int frames, int fps)
