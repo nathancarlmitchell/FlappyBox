@@ -444,12 +444,6 @@
 /processorParam:Quality=Best
 /build:Sounds/Music/8bit Bossa.wav
 
-#begin Sounds/Music/CURES ANXIETY.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sounds/Music/CURES ANXIETY.wav
-
 #begin Sounds/unlock.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
