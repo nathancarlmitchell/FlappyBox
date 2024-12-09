@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlappyBox.Core", "FlappyBox.Core.csproj", "{C4D0D03D-844C-4F3B-B4A3-417E361E6CA3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C4D0D03D-844C-4F3B-B4A3-417E361E6CA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4D0D03D-844C-4F3B-B4A3-417E361E6CA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4D0D03D-844C-4F3B-B4A3-417E361E6CA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4D0D03D-844C-4F3B-B4A3-417E361E6CA3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9AD0A03F-ECE5-4AB9-98B4-BF6F54591A59}
+	EndGlobalSection
+EndGlobal

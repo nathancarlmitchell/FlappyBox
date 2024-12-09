@@ -118,7 +118,7 @@ namespace FlappyBox.States
                     skin.Locked = false;
                     skin.Activate();
                     Console.WriteLine("Skin unlocked.");
-                    Sound.Play(Sound.Unlock, 0.5f);
+                    Sound.Play(Sound.Unlock, 0.35f);
                 }
                 Console.WriteLine("Skin Locked.");
                 Sound.Play(Sound.Locked, 0.75f);

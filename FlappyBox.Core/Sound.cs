@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
 
 namespace FlappyBox
 {
@@ -13,6 +14,8 @@ namespace FlappyBox
             Unlock,
             Blip,
             Song;
+
+        public static Song mp3;
 
         public static SoundEffectInstance songInstance;
 
@@ -29,15 +32,15 @@ namespace FlappyBox
             Unlock = content.Load<SoundEffect>("Sounds/unlock");
             Blip = content.Load<SoundEffect>("Sounds/blip");
 
-            Song = content.Load<SoundEffect>("Sounds/Music/CURES ANXIETY");
+            Song = content.Load<SoundEffect>("Sounds/Music/8bit bossa");
 
             songInstance = Song.CreateInstance();
             songInstance.IsLooped = true;
             songInstance.Volume = 0.4f;
             songInstance.Play();
 
-            //Song = content.Load<Song>("Sounds/Music/CURES ANXIETY");
-            //MediaPlayer.Play(Song);
+            //mp3 = content.Load<Song>("Sounds/Music/8bit bossa");
+            //MediaPlayer.Play(mp3);
             //MediaPlayer.IsRepeating = true;
             //MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
         }
