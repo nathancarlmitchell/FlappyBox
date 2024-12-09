@@ -408,6 +408,12 @@
 /processorParam:TextureFormat=Color
 /build:locked.png
 
+#begin Sounds/blip.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/blip.wav
+
 #begin Sounds/button.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -432,23 +438,23 @@
 /processorParam:Quality=Best
 /build:Sounds/locked.wav
 
-#begin Sounds/unlock.wav
+#begin Sounds/Music/8bit Bossa.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Sounds/unlock.wav
-
-#begin Sounds/blip.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sounds/blip.wav
+/build:Sounds/Music/8bit Bossa.wav
 
 #begin Sounds/Music/CURES ANXIETY.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sounds/Music/CURES ANXIETY.wav
+
+#begin Sounds/unlock.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/unlock.wav
 
 #begin trophy.png
 /importer:TextureImporter
